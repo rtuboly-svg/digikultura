@@ -543,12 +543,12 @@
             {
                 type: 'test',
                 title: 'Teszt - Adatbiztonság',
-                question: 'Miért fontos az adatvédelmi beállítások védelembe vétele?',
+                question: 'Mit jelent az adatbiztonság?',
                 options: [
-                    { text: 'Az adataink és a magánéletünk védelméhez', correct: true },
-                    { text: 'Az internet gyorsabbá tételéhez', correct: false },
-                    { text: 'A számítógép gamingteljesítményének javításához', correct: false },
-                    { text: 'Nincs jelentősége', correct: false }
+                    { text: 'Az adataink és a magánéletünk védelme', correct: true },
+                    { text: 'Az internet gyorsabbá tétele', correct: false },
+                    { text: 'A számítógép gamingteljesítménye', correct: false },
+                    { text: 'Jelszavak közzététele az interneten', correct: false }
                 ]
             },
             {
@@ -565,9 +565,9 @@
             {
                 type: 'test',
                 title: 'Teszt - Digitális Állampolgárság',
-                question: 'Mit jelent a digitális állampolgárság?',
+                question: 'Mit jelent a felelős internethaszálat?',
                 options: [
-                    { text: 'Felelős és etikus internet használat', correct: true },
+                    { text: 'Etikus és biztonságos online viselkedés', correct: true },
                     { text: 'Csak gamezést jelent', correct: false },
                     { text: 'Jogosítványt szerzés online', correct: false },
                     { text: 'Valuta váltás az interneten', correct: false }
@@ -615,57 +615,72 @@
             // KIEGÉSZÍTŐS FELADATOK
             {
                 type: 'fillblank',
-                title: 'Kiegészítő Feladat - HTML',
+                title: 'Kiegészítő Feladat - Webtechnológiák',
                 question: 'Egészítsd ki a hiányzó szavakat!',
-                text: 'A HTML a _____ azt jelent, és a weboldalak szerkezetét határozza meg. A CSS pedig a _____ meghatározásáért felelős.',
+                text: 'A HTML a weboldalak _____ meghatározásáért felelős. A CSS pedig a _____ beállításához szükséges. A _____ pedig interaktivitást ad az oldalnak.',
                 blanks: [
-                    { answer: 'HyperText Markup Language', alternatives: ['hypertext markup language'] },
-                    { answer: 'stílus', alternatives: ['design', 'formatting'] }
+                    { answer: 'szerkezetét', alternatives: ['szerkezet', 'struktura'] },
+                    { answer: 'stílus', alternatives: ['design', 'formázást'] },
+                    { answer: 'JavaScript', alternatives: ['javascript', 'JS'] }
                 ]
             },
             {
                 type: 'fillblank',
-                title: 'Kiegészítő Feladat - Biztonság',
+                title: 'Kiegészítő Feladat - Jelszóbiztonság',
                 question: 'Egészítsd ki a hiányzó szavakat!',
-                text: 'Az erős jelszónak tartalmaznia kell _____ és _____ betűket, valamint számokat és speciális karaktereket. Legalább _____ karakter hosszúnak kell lennie.',
+                text: 'Az erős jelszónak tartalmaznia kell _____ és _____ betűket, valamint _____ és speciális karaktereket.',
                 blanks: [
-                    { answer: 'nagybetű', alternatives: ['nagy', 'nagykis'] },
-                    { answer: 'kisbetű', alternatives: ['kis', 'kicsi'] },
-                    { answer: '8', alternatives: ['nyolc', 'hat', 'tíz'] }
+                    { answer: 'nagybetű', alternatives: ['nagy', 'nagybetűs'] },
+                    { answer: 'kisbetű', alternatives: ['kis', 'kisbetűs'] },
+                    { answer: 'számokat', alternatives: ['szám', 'számjegyeket'] }
                 ]
             },
             {
                 type: 'fillblank',
-                title: 'Kiegészítő Feladat - Szocális Média',
+                title: 'Kiegészítő Feladat - Online Viselkedés',
                 question: 'Egészítsd ki a hiányzó szavakat!',
-                text: 'A közösségi média olyan platformok, ahol az emberek _____, fotókat oszthatnak meg és _____ létesíthetnek. Fontos az online _____ fenntartása.',
+                text: 'A közösségi média olyan platformok, ahol az emberek _____ és fotókat _____ meg. Fontos az online _____ fenntartása.',
                 blanks: [
-                    { answer: 'tartalmakat', alternatives: ['információkat', 'adatokat', 'üzeneteket'] },
-                    { answer: 'kapcsolatokat', alternatives: ['ismeretségeket', 'barátságokat'] },
-                    { answer: 'etika', alternatives: ['biztonság', 'adatvédelmi', 'magatartás'] }
+                    { answer: 'tartalmakat', alternatives: ['információkat', 'adatokat'] },
+                    { answer: 'oszthatnak', alternatives: ['osztatnak', 'megosztanak'] },
+                    { answer: 'etika', alternatives: ['magatartás', 'viselkedés'] }
                 ]
             },
 
             // AKASZTÓFÁS JÁTÉK
             {
                 type: 'hangman',
-                title: 'Akasztófás Játék - Digitális Kultúra',
-                word: 'KIBERFEGYVERZET',
-                hint: 'Az interneten alkalmazott támadási módszerek',
+                title: 'Akasztófás Játék - Internet',
+                word: 'MEGOLDAS',
+                hint: 'Probléma elhárítása vagy válasz keresése a kérdésre',
+                maxWrong: 6
+            },
+            {
+                type: 'hangman',
+                title: 'Akasztófás Játék - Online Viselkedés',
+                word: 'TROLL',
+                hint: 'Aki szándékosan provokálja és bosszantja mások hozzászólásaival az interneten',
                 maxWrong: 6
             },
             {
                 type: 'hangman',
                 title: 'Akasztófás Játék - Biztonság',
-                word: 'JELSZAVAK',
-                hint: 'Ezeknek kell erősnek és egyedinek lenniük az online biztonságért',
+                word: 'KIBERBIZTONSÁG',
+                hint: 'A szakterület, amely az internetes és számítógépes támadások ellen véd',
                 maxWrong: 6
             },
             {
                 type: 'hangman',
-                title: 'Akasztófás Játék - Internet',
-                word: 'TROLIZAS',
-                hint: 'Mások netezésének zavarása és piszkálása az interneten',
+                title: 'Akasztófás Játék - Szerzői Jog',
+                word: 'CREATIVECOMMONS',
+                hint: 'Nyílt forráskód licenc, amely lehetővé teszi a kreatív munkák megosztását',
+                maxWrong: 6
+            },
+            {
+                type: 'hangman',
+                title: 'Akasztófás Játék - Minőség Biztosítás',
+                word: 'JOGTISZTA',
+                hint: 'Olyan tartalom, amely nem sért semmilyen szerzői jogot vagy más jogot',
                 maxWrong: 6
             },
 
@@ -696,7 +711,7 @@
                         hint: 'A digitális támadások elleni védekezés (7 betű)',
                         question: 'Mi az a szoftver, amely véd a vírusok ellen?',
                         answer: 'ANTIVÍRUS',
-                        alternatives: ['antivirus', 'antivirus', 'antivirust']
+                        alternatives: ['antivirus', 'antivirust']
                     }
                 ]
             }
