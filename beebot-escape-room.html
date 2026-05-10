@@ -236,35 +236,6 @@
             font-weight: bold;
         }
 
-        .grid-input {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin: 15px 0;
-        }
-
-        .grid-btn {
-            padding: 15px;
-            font-size: 1.2em;
-            border: 3px solid var(--primary);
-            background: white;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.2s;
-        }
-
-        .grid-btn:hover {
-            background: var(--bg-light);
-            transform: scale(1.05);
-        }
-
-        .grid-btn.selected {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary-dark);
-        }
-
         button {
             background: linear-gradient(135deg, var(--secondary) 0%, #45a049 100%);
             color: white;
@@ -296,19 +267,6 @@
 
         .next-btn.show {
             display: block;
-        }
-
-        .code-display {
-            background: #000;
-            color: #0F0;
-            padding: 20px;
-            border-radius: 10px;
-            font-family: 'Courier New', monospace;
-            margin: 15px 0;
-            font-size: 1.2em;
-            border: 3px solid var(--primary);
-            text-align: center;
-            letter-spacing: 5px;
         }
 
         .hint {
@@ -354,6 +312,22 @@
             color: var(--text-dark);
             margin: 20px 0;
             line-height: 1.8;
+        }
+
+        .video-container {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 30px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .video-container iframe {
+            width: 100%;
+            max-width: 500px;
+            height: 300px;
+            border-radius: 10px;
+            border: 4px solid var(--primary);
         }
 
         .progress {
@@ -430,6 +404,65 @@
             content: '❌ ';
         }
 
+        /* GRID PUZZLE STYLES */
+        .grid-puzzle {
+            margin: 20px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .puzzle-info {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 1.05em;
+            color: #856404;
+            text-align: center;
+            max-width: 500px;
+        }
+
+        .puzzle-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+            gap: 5px;
+            padding: 15px;
+            background: #f0f0f0;
+            border-radius: 10px;
+            min-width: 200px;
+        }
+
+        .grid-cell {
+            aspect-ratio: 1;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: move;
+            position: relative;
+            user-select: none;
+        }
+
+        .grid-cell.start {
+            background: #E3F2FD;
+            border-color: #2196F3;
+        }
+
+        .grid-cell.end {
+            background: #FFE5B4;
+            border-color: var(--primary-dark);
+        }
+
+        .grid-cell.path {
+            background: #FFE5B4;
+            border-color: #FFB84D;
+        }
+
         .zumi-board {
             background: linear-gradient(135deg, #87CEEB 0%, #E0FFFF 100%);
             border: 4px solid var(--primary-dark);
@@ -446,33 +479,43 @@
             font-size: 1.1em;
         }
 
-        .board-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-            margin-bottom: 15px;
+        .puzzle-controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 15px;
         }
 
-        .board-cell {
-            background: white;
-            border: 2px solid var(--primary);
-            border-radius: 8px;
-            padding: 15px;
-            font-size: 1.5em;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .board-cell:hover {
-            background: var(--bg-light);
-            transform: scale(1.05);
-        }
-
-        .board-cell.selected {
-            background: var(--primary);
+        .arrow-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
-            border-color: var(--primary-dark);
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            font-weight: bold;
+        }
+
+        .arrow-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .arrow-btn:active {
+            transform: scale(0.9);
+        }
+
+        .step-counter {
+            background: white;
+            border: 3px solid var(--primary);
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-weight: bold;
+            color: var(--primary-dark);
+            font-size: 1.1em;
         }
 
         @media (max-width: 768px) {
@@ -492,8 +535,8 @@
                 font-size: 1.8em;
             }
 
-            .board-grid {
-                grid-template-columns: repeat(3, 1fr);
+            .puzzle-grid {
+                grid-template-columns: repeat(4, 1fr);
             }
         }
     </style>
@@ -510,6 +553,9 @@
             <div class="progress-item" id="progress-2">2</div>
             <div class="progress-item" id="progress-3">3</div>
             <div class="progress-item" id="progress-4">4</div>
+            <div class="progress-item" id="progress-5">5</div>
+            <div class="progress-item" id="progress-6">6</div>
+            <div class="progress-item" id="progress-7">7</div>
         </div>
 
         <div class="rooms-container">
@@ -524,12 +570,12 @@
                         
                         <p>Rajtad múlik, hogy kiszabadulhatsz-e! A szobák ajtaját egy-egy <strong>feladat</strong> nyitja meg. Ha helyesen megoldod őket, végigvihetsz engem a szabadulószobán, és végül egy csodálatos kincshez juthatsz!</p>
                         
-                        <p><strong>Négy szoba vár rád:</strong></p>
+                        <p><strong>Hét szoba vár rád:</strong></p>
                         <p style="text-align: center; font-size: 1.1em;">
-                            🗺️ Labirintus → 🌈 Színek → 💻 Kódok → 🔐 Végső Jelszó
+                            🗺️ Labirintus → 🌈 Színek → 💻 Kódok → 🔐 Jelszó → 🧩 Útkeresés (3 szint)
                         </p>
                         
-                        <p>Kész vagy erre az izgalmas kalantra? Akkor indulj el az első szobába! 🚀</p>
+                        <p>Kész vagy erre az izgalmas kalandon? Akkor indulj el az első szobába! 🚀</p>
                     </div>
                 </div>
 
@@ -538,7 +584,7 @@
 
             <!-- ROOM 1: MOVEMENT CHALLENGE -->
             <div class="room" data-room="1">
-                <div class="room-title">🗺️ 1. szoba: A Labirintus</div>
+                <div class="room-title">🗺️ 1. szoba: Az Irányok Labirintusa</div>
                 
                 <div class="room-content">
                     <div>
@@ -628,7 +674,7 @@
                     </div>
                     <div>
                         <div class="room-text">
-                            <strong>Ez a tárgyalóm!</strong> - mondja egy másik robot. - Zümi megtanulta a robot-parancsokat. De tudod-e te is számlálni őket?
+                            <strong>Ez az én tárgyalóm!</strong> - mondja egy másik robot. - Zümi megtanulta a robot-parancsokat. De tudod-e te is számlálni őket?
                         </div>
                     </div>
                 </div>
@@ -660,7 +706,7 @@
 
             <!-- ROOM 4: FINAL CHALLENGE -->
             <div class="room" data-room="4">
-                <div class="room-title">🔐 4. szoba: Az Utolsó Jelszó</div>
+                <div class="room-title">🔐 4. szoba: Az Utolsó Kód</div>
                 
                 <div class="room-content">
                     <div>
@@ -668,75 +714,187 @@
                     </div>
                     <div>
                         <div class="room-text">
-                            <strong>Az utolsó ajtó előtt egy titokzatos zárlat van!</strong> Az összes előző feladat megoldásai az utolsó jelszót adják meg. Össze kell adnod őket!
+                            <strong>Az ajtó előtt egy titokzatos számkódú lakat van!</strong> Meg kell találnod a helyes kódot a Bee-Bot számára, hogy kiszabadulhasson a szobából.
                         </div>
                     </div>
                 </div>
 
                 <div class="challenge">
-                    <div class="challenge-title">Az Utolsó Jelszó</div>
-                    <p>Zümi szomorú az utolsó ajtó előtt. Segítsd meg összeszámolni:</p>
-                    
-                    <div class="zumi-board">
-                        <div class="zumi-board-title">🔑 A Jelszó Formula:</div>
-                        <div id="room4-formula" class="code-display">
-                            
-                        </div>
-                    </div>
-
-                    <p id="room4-question"><strong>Mi a végeredmény?</strong></p>
+                    <div class="challenge-title">Feladat: Az Utolsó Rejtély</div>
+                    <p>Kombinálni kell mindent, amit megtanultál!</p>
+                    <p style="margin: 15px 0; font-size: 1.2em; text-align: center; font-weight: bold;">
+                        <span id="room4-sum1">?</span> + <span id="room4-sum2">?</span> + <span id="room4-sum3">?</span> = <strong style="color: var(--accent);">?</strong>
+                    </p>
                     
                     <div class="input-group">
-                        <input type="number" id="room4-answer" placeholder="Add meg a végeredményt!">
-                        <button onclick="checkAnswer(4)">Jelszó Bejelentés</button>
+                        <input type="number" id="room4-answer" placeholder="Mi az utolsó kód?">
+                        <button onclick="checkAnswer(4)">Kód bejelentés</button>
                     </div>
                     
                     <div id="room4-feedback" class="feedback"></div>
-                    <div class="hint" id="room4-hint">Összeadod az összes előző válasz számát!</div>
+                    <div class="hint" id="room4-hint">Az összes eddig helyes válasz összeadása adja meg a kódot!</div>
                 </div>
 
-                <button class="next-btn" id="room4-next" onclick="switchRoom(5)">🎉 KINYÍLIK AZ AJTÓ!</button>
+                <button class="next-btn" id="room4-next" onclick="switchRoom(5)">➡️ Útkeresés szobája</button>
+            </div>
+
+            <!-- ROOM 5: MAZE PUZZLE 1 -->
+            <div class="room" data-room="5">
+                <div class="room-title">🧩 5. szoba: Az Első Útkeresés</div>
+                
+                <div class="room-content">
+                    <div>
+                        <div class="room-image">🧭</div>
+                    </div>
+                    <div>
+                        <div class="room-text">
+                            <strong>Zümi egy labirintusban ragadt!</strong> Segítsd meg a nyilak segítségével a lehető legkevesebb lépéssel a kincshez jutni. Mozgasd a Zümit a kincsig a nyilak gombjaival!
+                        </div>
+                    </div>
+                </div>
+
+                <div class="challenge">
+                    <div class="challenge-title">Puzzle Szint 1 - Könnyű</div>
+                    <div class="puzzle-info">Vezess Zümit (🐝) a kincshez (💎) a lehető legkevesebb lépéssel!</div>
+                    
+                    <div class="grid-puzzle">
+                        <div class="puzzle-grid" id="puzzle1-grid"></div>
+                        <div class="puzzle-controls">
+                            <button class="arrow-btn" onclick="movePuzzle(1, 'up')">⬆️</button>
+                        </div>
+                        <div style="display: flex; gap: 10px; justify-content: center;">
+                            <button class="arrow-btn" onclick="movePuzzle(1, 'left')">⬅️</button>
+                            <button class="arrow-btn" onclick="movePuzzle(1, 'down')">⬇️</button>
+                            <button class="arrow-btn" onclick="movePuzzle(1, 'right')">➡️</button>
+                        </div>
+                        <div class="step-counter">Lépések: <span id="puzzle1-steps">0</span> / <span id="puzzle1-target">6</span></div>
+                    </div>
+                    
+                    <div id="puzzle1-feedback" class="feedback"></div>
+                    <div class="hint">Gondolkodj előre! Keress a legrövidebb utat!</div>
+                </div>
+
+                <button class="next-btn" id="room5-next" onclick="switchRoom(6)">➡️ Következő Szoba</button>
+            </div>
+
+            <!-- ROOM 6: MAZE PUZZLE 2 -->
+            <div class="room" data-room="6">
+                <div class="room-title">🧩 6. szoba: A Második Útkeresés</div>
+                
+                <div class="room-content">
+                    <div>
+                        <div class="room-image">🧭</div>
+                    </div>
+                    <div>
+                        <div class="room-text">
+                            <strong>Ez már nehezebb!</strong> A labirintus bonyolultabb lett. Működj logikusan és találd meg az útvonalat!
+                        </div>
+                    </div>
+                </div>
+
+                <div class="challenge">
+                    <div class="challenge-title">Puzzle Szint 2 - Közepes</div>
+                    <div class="puzzle-info">Még körültekintőbben kell navigálnod! Vigyázz az akadályokra!</div>
+                    
+                    <div class="grid-puzzle">
+                        <div class="puzzle-grid" id="puzzle2-grid"></div>
+                        <div class="puzzle-controls">
+                            <button class="arrow-btn" onclick="movePuzzle(2, 'up')">⬆️</button>
+                        </div>
+                        <div style="display: flex; gap: 10px; justify-content: center;">
+                            <button class="arrow-btn" onclick="movePuzzle(2, 'left')">⬅️</button>
+                            <button class="arrow-btn" onclick="movePuzzle(2, 'down')">⬇️</button>
+                            <button class="arrow-btn" onclick="movePuzzle(2, 'right')">➡️</button>
+                        </div>
+                        <div class="step-counter">Lépések: <span id="puzzle2-steps">0</span> / <span id="puzzle2-target">10</span></div>
+                    </div>
+                    
+                    <div id="puzzle2-feedback" class="feedback"></div>
+                    <div class="hint">Az egyenes utakban gyorsabb a haladás. Tervezd meg az útvonalat!</div>
+                </div>
+
+                <button class="next-btn" id="room6-next" onclick="switchRoom(7)">➡️ Végső Szoba</button>
+            </div>
+
+            <!-- ROOM 7: MAZE PUZZLE 3 -->
+            <div class="room" data-room="7">
+                <div class="room-title">🧩 7. szoba: A Végső Útkeresés</div>
+                
+                <div class="room-content">
+                    <div>
+                        <div class="room-image">🧭</div>
+                    </div>
+                    <div>
+                        <div class="room-text">
+                            <strong>A végső kihívás!</strong> Ez a legsúlyosabb labirintus. Csak a legokosabb méhecskék tudnak eljutni ide! Koncentrálj és gondolkodj rendszeresen!
+                        </div>
+                    </div>
+                </div>
+
+                <div class="challenge">
+                    <div class="challenge-title">Puzzle Szint 3 - Nehéz</div>
+                    <div class="puzzle-info">A végső kihívás! Ez az igazi labirintus. Találd meg az utat a minimális lépésekhez!</div>
+                    
+                    <div class="grid-puzzle">
+                        <div class="puzzle-grid" id="puzzle3-grid"></div>
+                        <div class="puzzle-controls">
+                            <button class="arrow-btn" onclick="movePuzzle(3, 'up')">⬆️</button>
+                        </div>
+                        <div style="display: flex; gap: 10px; justify-content: center;">
+                            <button class="arrow-btn" onclick="movePuzzle(3, 'left')">⬅️</button>
+                            <button class="arrow-btn" onclick="movePuzzle(3, 'down')">⬇️</button>
+                            <button class="arrow-btn" onclick="movePuzzle(3, 'right')">➡️</button>
+                        </div>
+                        <div class="step-counter">Lépések: <span id="puzzle3-steps">0</span> / <span id="puzzle3-target">15</span></div>
+                    </div>
+                    
+                    <div id="puzzle3-feedback" class="feedback"></div>
+                    <div class="hint">Megoldható! Hajrá, Zümi már szinte szabad!</div>
+                </div>
+
+                <button class="next-btn" id="room7-next" onclick="switchRoom(8)">🎉 A KINCS!</button>
             </div>
 
             <!-- TREASURE ROOM -->
-            <div class="room" data-room="5">
+            <div class="room" data-room="8">
                 <div class="treasure">
-                    <div class="treasure-emoji">🐝✨👑✨🐝</div>
+                    <div class="treasure-emoji">💎✨👑✨💎</div>
                     
-                    <h2>SIKERÜLT!</h2>
+                    <h2>GRATULÁLUNK!</h2>
                     
                     <div class="treasure-text">
-                        <p><strong>Zümi végre szabad!</strong> 🎉</p>
-                        <p style="font-size: 1.2em; margin: 20px 0;">Rendkívüli programozó vagy! Csodálatosan megoldottad az összes feladatot!</p>
+                        <p><strong>Zümi kiszabadult!</strong> 🐝🎉</p>
+                        <p>Csodálatos programozó vagy! Sikeresen megoldottad az összes feladatot, és kivezetted Zümit az információs labirintusból!</p>
                     </div>
 
                     <div style="background: var(--bg-light); padding: 30px; border-radius: 15px; margin: 30px 0; border: 4px dashed var(--primary);">
-                        <h3 style="color: var(--primary-dark); margin-bottom: 15px;">💎 AZ ELREJTETT KINCS 💎</h3>
+                        <h3 style="color: var(--primary-dark); margin-bottom: 15px;">📜 AZ ELREJTETT KINCS 📜</h3>
                         <p style="font-size: 1.3em; color: var(--accent); font-weight: bold; margin: 15px 0;">A PROGRAMOZÁS VARÁZSLATA</p>
-                        <p style="font-size: 1.1em; line-height: 1.8; color: var(--text-dark);">
-                            Most már tudod, hogy Zümi és a robotok egyszerű utasítások segítségével oldanak meg feladatokat. Ez a <strong>programozás</strong> lényege! 
-                            <br><br>
-                            Amikor kódot írsz vagy robotot programmozol, tulajdonképpen olyan lépéseket adasz, amelyeket a gép pontosan követ. Ez a képesség később sokkal bonyolultabb programok írásához vezet!
-                            <br><br>
-                            Zümi és barátai köszönik a segítséget! 🐝💛
+                        <p style="font-size: 1.1em; line-height: 1.8; color: var(--text-dark); margin-bottom: 20px;">
+                            Most már tudod, hogy a Bee-Bot robotok egyszerű utasítások segítségével tudnak navigálni a világban. Ez a <strong>kódolás</strong> alapja! 
+                            Minél több programot írsz, annál okosabb és kreatívabb leszel. A programozás mint egy rejtett kincs - annál többet tanulsz, annál több lehetőség nyílik meg előtted! 🚀
+                        </p>
+
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+                        </div>
+
+                        <p style="margin-top: 20px; font-size: 1.05em; color: var(--text-dark);">
+                            <strong>Tippek a következő kalantra:</strong><br>
+                            ✓ Szerezzél többet a Bee-Botról!<br>
+                            ✓ Tervezz új útvonalakat a robotnak!<br>
+                            ✓ Barátaiddal versenyezz, ki tudja gyorsabban elvégezni a feladatot! 🏁
                         </p>
                     </div>
 
-                    <p style="font-size: 1.05em; color: var(--text-dark); margin-top: 30px;">
-                        <strong>🚀 Következő szintek:</strong><br>
-                        ✓ Fedezz fel több Bee-Bot feladatot!<br>
-                        ✓ Tervezz saját útvonalakat Zümiéknek!<br>
-                        ✓ Barátaiddal versenyezz! Aki gyorsabban oldja meg, az nyeri meg a Kincseket! 🏆
-                    </p>
-
-                    <button onclick="location.reload()" style="margin-top: 30px; width: auto;">🔄 Újra játszani</button>
+                    <button onclick="location.reload()" style="margin-top: 30px; width: auto;">🔄 Újra kezdeni</button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // FELADATOK ADATBÁZISA - Minden újraindításkor random feladatok
+        // FELADATOK ADATBÁZISA
         const challenges = {
             room1: [
                 { pattern: '⬆️ ⬆️ ⬆️ ➡️', answer: 4, hint: 'Összesen 3 előre + 1 jobbra = 4' },
@@ -749,30 +907,30 @@
                     pattern: '🔴 🟡 🔵 🔴 🟡',
                     choices: ['🔵', '🔴', '🟡', '🟢'],
                     answer: '🔵',
-                    hint: 'A minta 3 szín szerint ismétlődik: piros, sárga, kék...'
+                    hint: 'A minta 3 szín szerint ismétlődik'
                 },
                 { 
                     pattern: '⭐ 🌙 ☀️ ⭐ 🌙',
                     choices: ['☀️', '⭐', '🌙', '❤️'],
                     answer: '☀️',
-                    hint: 'A minta 3 elem szerint ismétlődik...'
+                    hint: 'A minta 3 elem szerint ismétlődik'
                 },
                 { 
                     pattern: '🍎 🍌 🍎 🍌 🍎',
                     choices: ['🍌', '🍎', '🍉', '🍓'],
                     answer: '🍌',
-                    hint: 'A minta 2 elem szerint ismétlődik: alma, banán...'
+                    hint: 'A minta 2 elem szerint ismétlődik'
                 },
                 { 
                     pattern: '🟣 🟠 🟢 🟣 🟠',
                     choices: ['🟢', '🟣', '🟠', '🟡'],
                     answer: '🟢',
-                    hint: 'A minta 3 szín szerint ismétlődik...'
+                    hint: 'A minta 3 szín szerint ismétlődik'
                 }
             ],
             room3: [
                 { pattern: '⬆️ ⬆️ ⬆️ ➡️ ⬆️ ➡️', answer: 6, hint: 'Számold meg az összes szimbólumot!' },
-                { pattern: '⬆️ ⬆️ ➡️ ⬆️ ⬆️ ⬆️ ⬅️', answer: 7, hint: 'Összes parancs: 5 előre + 1 jobbra + 1 balra = 7' },
+                { pattern: '⬆️ ⬆️ ➡️ ⬆️ ⬆️ ⬆️ ⬅️', answer: 7, hint: '5 előre + 1 jobbra + 1 balra = 7' },
                 { pattern: '⬆️ ➡️ ⬆️ ➡️ ⬆️', answer: 5, hint: 'Összesen 5 parancs' },
                 { pattern: '⬆️ ⬆️ ⬆️ ⬆️ ➡️ ⬆️', answer: 6, hint: '4 előre + 1 jobbra + 1 előre = 6' }
             ]
@@ -783,6 +941,35 @@
         let currentRoom3 = null;
         let completedRooms = new Set();
         let answers = {};
+        let puzzleStates = {};
+
+        // PUZZLE MAZEOK
+        const mazes = {
+            1: {
+                width: 4,
+                height: 3,
+                start: { x: 0, y: 0 },
+                end: { x: 3, y: 2 },
+                walls: [[1, 1], [2, 1]],
+                targetSteps: 6
+            },
+            2: {
+                width: 5,
+                height: 4,
+                start: { x: 0, y: 0 },
+                end: { x: 4, y: 3 },
+                walls: [[1, 1], [1, 2], [2, 2], [3, 1], [3, 2]],
+                targetSteps: 10
+            },
+            3: {
+                width: 6,
+                height: 5,
+                start: { x: 0, y: 0 },
+                end: { x: 5, y: 4 },
+                walls: [[1, 1], [1, 2], [2, 2], [2, 3], [3, 1], [3, 3], [4, 1], [4, 2], [4, 4]],
+                targetSteps: 15
+            }
+        };
 
         function getRandomChallenge(roomArray) {
             return roomArray[Math.floor(Math.random() * roomArray.length)];
@@ -793,11 +980,9 @@
             currentRoom2 = getRandomChallenge(challenges.room2);
             currentRoom3 = getRandomChallenge(challenges.room3);
 
-            // Room 1
             document.getElementById('room1-board').textContent = currentRoom1.pattern;
             document.getElementById('room1-hint').textContent = currentRoom1.hint;
 
-            // Room 2
             document.getElementById('room2-board').textContent = currentRoom2.pattern;
             document.getElementById('room2-hint').textContent = currentRoom2.hint;
             const choicesHtml = currentRoom2.choices.map(emoji => 
@@ -805,9 +990,95 @@
             ).join('');
             document.getElementById('room2-choices').innerHTML = choicesHtml;
 
-            // Room 3
             document.getElementById('room3-board').textContent = currentRoom3.pattern;
             document.getElementById('room3-hint').textContent = currentRoom3.hint;
+
+            // Inicializáld a maze-okat
+            initializePuzzles();
+        }
+
+        function initializePuzzles() {
+            for (let i = 1; i <= 3; i++) {
+                puzzleStates[i] = {
+                    pos: { ...mazes[i].start },
+                    steps: 0,
+                    solved: false
+                };
+                renderPuzzle(i);
+            }
+        }
+
+        function renderPuzzle(puzzleNum) {
+            const maze = mazes[puzzleNum];
+            const state = puzzleStates[puzzleNum];
+            const grid = document.getElementById(`puzzle${puzzleNum}-grid`);
+            grid.innerHTML = '';
+            grid.style.gridTemplateColumns = `repeat(${maze.width}, 1fr)`;
+
+            for (let y = 0; y < maze.height; y++) {
+                for (let x = 0; x < maze.width; x++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'grid-cell';
+
+                    if (x === maze.start.x && y === maze.start.y) {
+                        cell.classList.add('start');
+                    }
+                    if (x === maze.end.x && y === maze.end.y) {
+                        cell.classList.add('end');
+                    }
+
+                    if (maze.walls.some(w => w[0] === x && w[1] === y)) {
+                        cell.innerHTML = '🚫';
+                        cell.style.cursor = 'not-allowed';
+                    } else if (state.pos.x === x && state.pos.y === y) {
+                        cell.innerHTML = '🐝';
+                    } else if (x === maze.end.x && y === maze.end.y) {
+                        cell.innerHTML = '💎';
+                    }
+
+                    grid.appendChild(cell);
+                }
+            }
+
+            document.getElementById(`puzzle${puzzleNum}-steps`).textContent = state.steps;
+        }
+
+        function movePuzzle(puzzleNum, direction) {
+            const maze = mazes[puzzleNum];
+            const state = puzzleStates[puzzleNum];
+
+            if (state.solved) return;
+
+            let newPos = { ...state.pos };
+
+            switch(direction) {
+                case 'up': newPos.y = Math.max(0, newPos.y - 1); break;
+                case 'down': newPos.y = Math.min(maze.height - 1, newPos.y + 1); break;
+                case 'left': newPos.x = Math.max(0, newPos.x - 1); break;
+                case 'right': newPos.x = Math.min(maze.width - 1, newPos.x + 1); break;
+            }
+
+            // Ellenőrizd a falakat
+            if (maze.walls.some(w => w[0] === newPos.x && w[1] === newPos.y)) {
+                return;
+            }
+
+            state.pos = newPos;
+            state.steps++;
+
+            // Ellenőrizd, hogy megoldott-e
+            if (state.pos.x === maze.end.x && state.pos.y === maze.end.y) {
+                state.solved = true;
+                const feedback = document.getElementById(`puzzle${puzzleNum}-feedback`);
+                feedback.classList.remove('incorrect');
+                feedback.classList.add('correct');
+                feedback.textContent = `✅ Sikerült! ${state.steps} lépésben erreztél el! Jól csináltad!`;
+                document.getElementById(`puzzle${puzzleNum}-next`).classList.add('show');
+                completedRooms.add(4 + puzzleNum);
+                updateProgress(4 + puzzleNum);
+            }
+
+            renderPuzzle(puzzleNum);
         }
 
         function switchRoom(roomNumber) {
@@ -847,7 +1118,7 @@
             if (correct) {
                 feedback.classList.remove('incorrect');
                 feedback.classList.add('correct');
-                feedback.textContent = `✅ Remek! ${correctAnswer} a helyes válasz! Zümi továbbléphet!`;
+                feedback.textContent = `✅ Helyes! Zümi továbbléphet!`;
                 nextBtn.classList.add('show');
                 completedRooms.add(roomNumber);
                 answers[roomNumber] = correctAnswer;
@@ -855,7 +1126,7 @@
             } else {
                 feedback.classList.remove('correct');
                 feedback.classList.add('incorrect');
-                feedback.textContent = `❌ Nem jó. Próbáld újra! A helyes válasz: ${correctAnswer}`;
+                feedback.textContent = `❌ Nem jó. Próbáld újra!`;
             }
         }
 
@@ -877,7 +1148,7 @@
                 feedback.textContent = `✅ Tökéletes! Ez a helyes szín! Zümi mosolyog!`;
                 nextBtn.classList.add('show');
                 completedRooms.add(2);
-                answers[2] = 3; // Always 3 for pattern room
+                answers[2] = 3;
                 updateProgress(2);
             } else {
                 feedback.classList.remove('correct');
@@ -887,7 +1158,7 @@
         }
 
         function updateProgress(currentRoom) {
-            for (let i = 1; i <= 4; i++) {
+            for (let i = 1; i <= 7; i++) {
                 const progressItem = document.getElementById(`progress-${i}`);
                 progressItem.classList.remove('completed', 'current');
 
@@ -900,9 +1171,9 @@
 
             // Update room 4 formula
             if (currentRoom === 4 || completedRooms.has(4)) {
-                const sum = (answers[1] || 0) + (answers[2] || 0) + (answers[3] || 0);
-                document.getElementById('room4-formula').textContent = 
-                    `${answers[1] || '?'} + ${answers[2] || '?'} + ${answers[3] || '?'} = ?`;
+                document.getElementById('room4-sum1').textContent = answers[1] || '?';
+                document.getElementById('room4-sum2').textContent = answers[2] || '?';
+                document.getElementById('room4-sum3').textContent = answers[3] || '?';
             }
         }
 
