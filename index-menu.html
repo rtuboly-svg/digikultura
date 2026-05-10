@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DigiKultura - Tananyag és Játékok</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Arial Rounded MT Bold', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        header p {
+            font-size: 1.3em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .menu-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-top: 8px solid #667eea;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .menu-card.zumi {
+            border-top-color: #FFD700;
+        }
+
+        .menu-card.test {
+            border-top-color: #4CAF50;
+        }
+
+        .card-icon {
+            font-size: 80px;
+            text-align: center;
+            padding: 30px 20px 20px;
+            background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+        }
+
+        .card-content {
+            padding: 30px;
+        }
+
+        .card-title {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .card-description {
+            font-size: 1.05em;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .card-features {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 0.95em;
+            color: #555;
+        }
+
+        .card-features ul {
+            list-style: none;
+            margin: 0;
+        }
+
+        .card-features li {
+            padding: 5px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .card-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #4CAF50;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .card-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 40px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+            text-align: center;
+            font-family: inherit;
+        }
+
+        .card-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .card-btn:active {
+            transform: scale(0.95);
+        }
+
+        .zumi .card-btn {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+        }
+
+        .zumi .card-btn:hover {
+            box-shadow: 0 10px 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .test .card-btn {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+        }
+
+        .test .card-btn:hover {
+            box-shadow: 0 10px 20px rgba(76, 175, 80, 0.4);
+        }
+
+        footer {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            color: #666;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        footer h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .info-box {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            color: white;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .info-box h2 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+
+        .info-box p {
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+
+            header p {
+                font-size: 1em;
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card-title {
+                font-size: 1.4em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎓 DigiKultura</h1>
+            <p>Tananyag és Interaktív Játékok</p>
+        </header>
+
+        <div class="info-box">
+            <h2>Üdvözlünk! 👋</h2>
+            <p>Válassz egy tevékenységet, és kezdd el az interaktív tanulást!</p>
+        </div>
+
+        <div class="menu-grid">
+            <!-- ZÜMI SZABADULÓSZOBA KÁRTYA -->
+            <div class="menu-card zumi">
+                <div class="card-icon">🐝</div>
+                <div class="card-content">
+                    <div class="card-title">Zümi Szabadulószobája</div>
+                    <div class="card-description">
+                        Segítsd meg Zümit, a kiscicka méhecskét, hogy szökjön ki a nyilvános könyvtárból! Oldj meg programozási feladatokat és találd meg a kincseket.
+                    </div>
+                    <div class="card-features">
+                        <ul>
+                            <li>4 szórakoztató szoba</li>
+                            <li>Robotmozgások és minták</li>
+                            <li>Random feladatok minden játék után</li>
+                            <li>Több perces kaland</li>
+                        </ul>
+                    </div>
+                    <button class="card-btn" onclick="openZumi()">🚀 ZÜMI INDÍTÁSA</button>
+                </div>
+            </div>
+
+            <!-- DIGITÁLIS KULTÚRA TESZT KÁRTYA -->
+            <div class="menu-card test">
+                <div class="card-icon">📚</div>
+                <div class="card-content">
+                    <div class="card-title">8. osztály - Tanév Vége</div>
+                    <div class="card-description">
+                        Teszteld az ismereteidet a digitális kultúráról! Többféle feladat típus vár: teszt, akasztófás, kiegészítő feladatok és még sok más.
+                    </div>
+                    <div class="card-features">
+                        <ul>
+                            <li>15+ variálható feladat</li>
+                            <li>Pontozási rendszer</li>
+                            <li>Akasztófás játék</li>
+                            <li>Szabadulószoba szint</li>
+                        </ul>
+                    </div>
+                    <button class="card-btn" onclick="openTest()">📖 TESZT INDÍTÁSA</button>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <h3>💡 Tudtad?</h3>
+            <p>A Bee-Bot (Zümi) egy valódi kis robot, amely a kódolás alapjait tanítja meg egyszerű, szórakoztató módon!</p>
+            <p style="margin-top: 15px; font-size: 0.9em; color: #999;">
+                Készült: 2026 | DigiKultura Tananyag
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        function openZumi() {
+            // Megnyitja a Zümi szabadulószobát
+            window.location.href = 'beebot-escape-room.html';
+        }
+
+        function openTest() {
+            // Megnyitja a digitális kultúra tesztet
+            window.location.href = 'index-test.html';
+        }
+    </script>
+</body>
+</html>
