@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>8. osztály - Digitális Kultúra Tanév Vége</title>
+    <title>DigiKultura - Tananyag és Játékok</title>
     <style>
         * {
             margin: 0;
@@ -12,1078 +12,289 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Comic Sans MS', 'Arial Rounded MT Bold', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
         }
 
         .container {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
         }
 
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        header {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
             color: white;
-            padding: 30px;
+            padding: 40px 20px;
             text-align: center;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-
-        .header p {
-            font-size: 1.1em;
-            opacity: 0.9;
-        }
-
-        .content {
-            padding: 30px;
-            min-height: 400px;
-        }
-
-        .welcome-screen, .task-container, .results-screen {
-            display: none;
-        }
-
-        .welcome-screen.active, .task-container.active, .results-screen.active {
-            display: block;
-            animation: fadeIn 0.5s ease-in;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .welcome-screen {
-            text-align: center;
-        }
-
-        .welcome-screen h2 {
-            color: #667eea;
-            margin-bottom: 20px;
-            font-size: 1.8em;
-        }
-
-        .welcome-screen p {
-            font-size: 1.1em;
-            margin-bottom: 15px;
-            color: #333;
-        }
-
-        .task-info {
-            background: #f0f4ff;
-            padding: 15px;
-            border-radius: 10px;
-            margin: 20px 0;
-            border-left: 4px solid #667eea;
-        }
-
-        .task-info strong {
-            color: #667eea;
-        }
-
-        .btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            font-size: 1em;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            margin: 10px 5px;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
-        }
-
-        .btn:active {
-            transform: translateY(0);
-        }
-
-        .btn-secondary {
-            background: #6c757d;
-        }
-
-        .btn-success {
-            background: #28a745;
-        }
-
-        .btn-danger {
-            background: #dc3545;
-        }
-
-        /* Task Styles */
-        .task-header {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            border-left: 4px solid #667eea;
-        }
-
-        .task-header h3 {
-            color: #667eea;
-            margin-bottom: 5px;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 25px;
-            background: #e0e0e0;
-            border-radius: 12px;
-            overflow: hidden;
-            margin-bottom: 20px;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-            width: 0%;
-            transition: width 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 0.9em;
-        }
-
-        /* Test Question */
-        .question {
-            margin-bottom: 25px;
-        }
-
-        .question-text {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            font-weight: bold;
-            color: #333;
-            border-left: 4px solid #667eea;
-        }
-
-        .options {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .option {
-            padding: 12px 15px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-            background: white;
-        }
-
-        .option:hover {
-            border-color: #667eea;
-            background: #f0f4ff;
-        }
-
-        .option input[type="radio"],
-        .option input[type="checkbox"] {
-            margin-right: 10px;
-            cursor: pointer;
-        }
-
-        .option.selected {
-            border-color: #667eea;
-            background: #e7f0ff;
-        }
-
-        .option.correct {
-            border-color: #28a745;
-            background: #d4edda;
-        }
-
-        .option.incorrect {
-            border-color: #dc3545;
-            background: #f8d7da;
-        }
-
-        /* Fill in the blanks */
-        .fill-blank {
-            display: inline-flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .blank-input {
-            padding: 8px 12px;
-            border: 2px solid #ddd;
-            border-radius: 5px;
-            font-size: 1em;
-            min-width: 120px;
-        }
-
-        .blank-input:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        /* Hangman Game */
-        .hangman-container {
-            text-align: center;
-            margin: 20px 0;
-        }
-
-        .hangman-word {
-            font-size: 2em;
-            font-weight: bold;
-            letter-spacing: 10px;
-            font-family: monospace;
-            margin: 20px 0;
-            color: #667eea;
-        }
-
-        .hangman-letters {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            justify-content: center;
-            margin: 20px 0;
-        }
-
-        .hangman-btn {
-            min-width: 40px;
-            padding: 8px 10px;
-            background: #ddd;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.2s;
-        }
-
-        .hangman-btn:hover:not(:disabled) {
-            background: #667eea;
-            color: white;
-        }
-
-        .hangman-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .hangman-status {
-            font-size: 1.2em;
-            margin: 20px 0;
-            font-weight: bold;
-        }
-
-        .hangman-status.win {
-            color: #28a745;
-        }
-
-        .hangman-status.lose {
-            color: #dc3545;
-        }
-
-        /* Escape Room */
-        .escape-room {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
-
-        .lock-status {
-            font-size: 1.2em;
-            margin: 15px 0;
-            padding: 10px;
-            background: white;
-            border-radius: 8px;
-            text-align: center;
-        }
-
-        .lock-status.locked {
-            color: #dc3545;
-            border: 2px solid #dc3545;
-        }
-
-        .lock-status.unlocked {
-            color: #28a745;
-            border: 2px solid #28a745;
-        }
-
-        .hints {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
-            border-left: 4px solid #ffc107;
-        }
-
-        .hint {
-            margin: 10px 0;
-            padding: 10px;
-            background: #fff3cd;
-            border-radius: 5px;
-        }
-
-        /* Results Screen */
-        .results-screen {
-            text-align: center;
-        }
-
-        .score-display {
+        header h1 {
             font-size: 3em;
-            font-weight: bold;
-            color: #667eea;
-            margin: 30px 0;
+            margin-bottom: 10px;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
         }
 
-        .score-display small {
-            font-size: 0.4em;
-            display: block;
+        header p {
+            font-size: 1.3em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .menu-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-top: 8px solid #667eea;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .menu-card.zumi {
+            border-top-color: #FFD700;
+        }
+
+        .menu-card.test {
+            border-top-color: #4CAF50;
+        }
+
+        .card-icon {
+            font-size: 80px;
+            text-align: center;
+            padding: 30px 20px 20px;
+            background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+        }
+
+        .card-content {
+            padding: 30px;
+        }
+
+        .card-title {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .card-description {
+            font-size: 1.05em;
             color: #666;
-            margin-top: 10px;
+            line-height: 1.6;
+            margin-bottom: 20px;
         }
 
-        .rating {
-            font-size: 2em;
-            margin: 20px 0;
-            padding: 20px;
-            border-radius: 10px;
-        }
-
-        .rating.excellent {
-            background: #d4edda;
-            color: #28a745;
-        }
-
-        .rating.good {
-            background: #cce5ff;
-            color: #0056b3;
-        }
-
-        .rating.average {
-            background: #fff3cd;
-            color: #856404;
-        }
-
-        .rating.poor {
-            background: #f8d7da;
-            color: #721c24;
-        }
-
-        .stats {
+        .card-features {
             background: #f8f9fa;
-            padding: 20px;
+            padding: 15px;
             border-radius: 10px;
-            margin: 20px 0;
-            text-align: left;
+            margin-bottom: 20px;
+            font-size: 0.95em;
+            color: #555;
         }
 
-        .stat-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid #ddd;
+        .card-features ul {
+            list-style: none;
+            margin: 0;
         }
 
-        .stat-item:last-child {
-            border-bottom: none;
-        }
-
-        /* Score display in header */
-        .score-header {
-            position: absolute;
-            top: 20px;
-            right: 30px;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: bold;
-        }
-
-        .header {
+        .card-features li {
+            padding: 5px 0;
+            padding-left: 25px;
             position: relative;
         }
 
-        /* Buttons container */
-        .buttons {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 20px;
+        .card-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #4CAF50;
+            font-weight: bold;
+            font-size: 1.2em;
         }
 
-        .hidden {
-            display: none;
+        .card-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 40px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+            text-align: center;
+            font-family: inherit;
+        }
+
+        .card-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .card-btn:active {
+            transform: scale(0.95);
+        }
+
+        .zumi .card-btn {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+        }
+
+        .zumi .card-btn:hover {
+            box-shadow: 0 10px 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .test .card-btn {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+        }
+
+        .test .card-btn:hover {
+            box-shadow: 0 10px 20px rgba(76, 175, 80, 0.4);
+        }
+
+        footer {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            color: #666;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        footer h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .info-box {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            color: white;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .info-box h2 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+
+        .info-box p {
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+
+            header p {
+                font-size: 1em;
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card-title {
+                font-size: 1.4em;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <div class="score-header" id="scoreHeader">Pontok: 0</div>
-            <h1>🎓 Digitális Kultúra</h1>
-            <p>8. osztály - Tanév Vége</p>
+        <header>
+            <h1>🎓 DigiKultura</h1>
+            <p>Tananyag és Interaktív Játékok</p>
+        </header>
+
+        <div class="info-box">
+            <h2>Üdvözlünk! 👋</h2>
+            <p>Válassz egy tevékenységet, és kezdd el az interaktív tanulást!</p>
         </div>
 
-        <div class="content">
-            <!-- Üdvözlő képernyő -->
-            <div class="welcome-screen active">
-                <h2>Tanév Vége</h2>
-                <div class="task-info">
-                    <strong>📋 Feladatok:</strong>
-                    <p>• Teszt jellegű kérdések</p>
-                    <p>• Többválasztós feladatok</p>
-                    <p>• Kiegészítős feladatok</p>
-                    <p>• Akasztófás játék</p>
-                    <p>• Szabaduloszoba feladat</p>
-                </div>
-                <div class="task-info">
-                    <strong>⚡ Pontozás:</strong>
-                    <p>Helyes válaszok: +10 pont</p>
-                    <p>Hibás válaszok: 0 pont</p>
-                </div>
-                <div class="buttons">
-                    <button class="btn" onclick="startQuiz()">Teszt Indítása</button>
+        <div class="menu-grid">
+            <!-- ZÜMI SZABADULÓSZOBA KÁRTYA -->
+            <div class="menu-card zumi">
+                <div class="card-icon">🐝</div>
+                <div class="card-content">
+                    <div class="card-title">Zümi Szabadulószobája</div>
+                    <div class="card-description">
+                        Segítsd meg Zümit, a kiscicka méhecskét, hogy szökjön ki a nyilvános könyvtárból! Oldj meg programozási feladatokat és találd meg a kincseket.
+                    </div>
+                    <div class="card-features">
+                        <ul>
+                            <li>4 szórakoztató szoba</li>
+                            <li>Robotmozgások és minták</li>
+                            <li>Random feladatok minden játék után</li>
+                            <li>Több perces kaland</li>
+                        </ul>
+                    </div>
+                    <button class="card-btn" onclick="openZumi()">🚀 ZÜMI INDÍTÁSA</button>
                 </div>
             </div>
 
-            <!-- Feladat konténer -->
-            <div class="task-container">
-                <div class="task-header">
-                    <h3 id="taskTitle">Feladat</h3>
-                    <p id="taskNumber"></p>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progressFill">0%</div>
-                </div>
-                <div id="taskContent"></div>
-                <div class="buttons">
-                    <button class="btn" id="submitBtn" onclick="submitTask()">Következő Feladat</button>
-                    <button class="btn btn-secondary" id="skipBtn" onclick="skipTask()">Kihagyás</button>
-                </div>
-            </div>
-
-            <!-- Eredmények képernyő -->
-            <div class="results-screen">
-                <h2>Gratulálunk!</h2>
-                <div class="score-display">
-                    <span id="finalScore">0</span>
-                    <small>pont</small>
-                </div>
-                <div class="rating" id="ratingDiv"></div>
-                <div class="stats">
-                    <div class="stat-item">
-                        <span>Megoldott feladatok:</span>
-                        <strong id="solvedTasks">0</strong>
+            <!-- DIGITÁLIS KULTÚRA TESZT KÁRTYA -->
+            <div class="menu-card test">
+                <div class="card-icon">📚</div>
+                <div class="card-content">
+                    <div class="card-title">8. osztály - Tanév Vége</div>
+                    <div class="card-description">
+                        Teszteld az ismereteidet a digitális kultúráról! Többféle feladat típus vár: teszt, akasztófás, kiegészítő feladatok és még sok más.
                     </div>
-                    <div class="stat-item">
-                        <span>Helyes válaszok:</span>
-                        <strong id="correctAnswers">0</strong>
+                    <div class="card-features">
+                        <ul>
+                            <li>15+ variálható feladat</li>
+                            <li>Pontozási rendszer</li>
+                            <li>Akasztófás játék</li>
+                            <li>Szabadulószoba szint</li>
+                        </ul>
                     </div>
-                    <div class="stat-item">
-                        <span>Helyes válaszok %:</span>
-                        <strong id="successRate">0%</strong>
-                    </div>
-                    <div class="stat-item">
-                        <span>Összes pont:</span>
-                        <strong id="totalPoints">0</strong>
-                    </div>
-                </div>
-                <div class="buttons">
-                    <button class="btn" onclick="location.reload()">Újra Kezdés</button>
+                    <button class="card-btn" onclick="openTest()">📖 TESZT INDÍTÁSA</button>
                 </div>
             </div>
         </div>
+
+        <footer>
+            <h3>💡 Tudtad?</h3>
+            <p>A Bee-Bot (Zümi) egy valódi kis robot, amely a kódolás alapjait tanítja meg egyszerű, szórakoztató módon!</p>
+            <p style="margin-top: 15px; font-size: 0.9em; color: #999;">
+                Készült: 2026 | DigiKultura Tananyag
+            </p>
+        </footer>
     </div>
 
     <script>
-        // Feladatok definíciója
-        const tasks = [
-            // TESZT JELLEGŰ KÉRDÉSEK
-            {
-                type: 'test',
-                title: 'Teszt - Internet Alapok',
-                question: 'Mi az Internet?',
-                options: [
-                    { text: 'A számítógépek közötti kommunikációs hálózat', correct: true },
-                    { text: 'Egy operációs rendszer neve', correct: false },
-                    { text: 'Egy webes böngésző', correct: false },
-                    { text: 'Egy szövegszerkesztő program', correct: false }
-                ]
-            },
-            {
-                type: 'test',
-                title: 'Teszt - E-mail',
-                question: 'Mi az elektronikus levél (e-mail) célja?',
-                options: [
-                    { text: 'Szöveges üzenetek elektronikus továbbítása', correct: true },
-                    { text: 'Csak képek küldésére szolgál', correct: false },
-                    { text: 'Kizárólag jogosított személyeknek', correct: false },
-                    { text: 'Pénznemek szállítására', correct: false }
-                ]
-            },
-            {
-                type: 'test',
-                title: 'Teszt - Adatbiztonság',
-                question: 'Mit jelent az adatbiztonság?',
-                options: [
-                    { text: 'Az adataink és a magánéletünk védelme', correct: true },
-                    { text: 'Az internet gyorsabbá tétele', correct: false },
-                    { text: 'A számítógép gamingteljesítménye', correct: false },
-                    { text: 'Jelszavak közzététele az interneten', correct: false }
-                ]
-            },
-            {
-                type: 'test',
-                title: 'Teszt - Szerzői Jogok',
-                question: 'Az interneten talált képeket engedély nélkül felhasználhatjuk?',
-                options: [
-                    { text: 'Nem, szerzői jog által védett', correct: true },
-                    { text: 'Igen, mindig felhasználhatjuk', correct: false },
-                    { text: 'Csak hétfőn', correct: false },
-                    { text: 'Csak akkor, ha privát az oldal', correct: false }
-                ]
-            },
-            {
-                type: 'test',
-                title: 'Teszt - Digitális Állampolgárság',
-                question: 'Mit jelent a felelős internethaszálat?',
-                options: [
-                    { text: 'Etikus és biztonságos online viselkedés', correct: true },
-                    { text: 'Csak gamezést jelent', correct: false },
-                    { text: 'Jogosítványt szerzés online', correct: false },
-                    { text: 'Valuta váltás az interneten', correct: false }
-                ]
-            },
-
-            // TÖBBVÁLASZTÓS KÉRDÉSEK
-            {
-                type: 'multiple',
-                title: 'Többválasztós - Internet Veszélyek',
-                question: 'Mely veszélyek leselkedhetnek az interneten? (Több helyes válasz!)',
-                options: [
-                    { text: 'Vírusok és kártékony szoftverek', correct: true },
-                    { text: 'Személyes adatok ellopása', correct: true },
-                    { text: 'Csengő nélküli járműves utazás', correct: false },
-                    { text: 'Cyberbullying (online zaklatás)', correct: true },
-                    { text: 'Kalória bevitel csökkentése', correct: false }
-                ]
-            },
-            {
-                type: 'multiple',
-                title: 'Többválasztós - Social Media Szabályok',
-                question: 'Mely viselkedés helytelen a közösségi médiában? (Több helyes válasz!)',
-                options: [
-                    { text: 'Hozzászólások törlése csalódottság után', correct: false },
-                    { text: 'Mások személyes adatainak közzététele', correct: true },
-                    { text: 'Kegyelmes viselkedés az összes felhasználóval szemben', correct: false },
-                    { text: 'Gyűlölet beszéd és diszkriminatív megjegyzések', correct: true },
-                    { text: 'Barátok fotóinak megosztása engedéllyel', correct: false }
-                ]
-            },
-            {
-                type: 'multiple',
-                title: 'Többválasztós - Eszközök',
-                question: 'Mely eszközök számítanak digitális eszköznek? (Több helyes válasz!)',
-                options: [
-                    { text: 'Okostelefon', correct: true },
-                    { text: 'Tablet', correct: true },
-                    { text: 'Személyi számítógép (PC)', correct: true },
-                    { text: 'Hagyományos könyv', correct: false },
-                    { text: 'Okosóra', correct: true }
-                ]
-            },
-
-            // KIEGÉSZÍTŐS FELADATOK
-            {
-                type: 'fillblank',
-                title: 'Kiegészítő Feladat - Webtechnológiák',
-                question: 'Egészítsd ki a hiányzó szavakat!',
-                text: 'A HTML a weboldalak _____ meghatározásáért felelős. A CSS pedig a _____ beállításához szükséges. A _____ pedig interaktivitást ad az oldalnak.',
-                blanks: [
-                    { answer: 'szerkezetét', alternatives: ['szerkezet', 'struktura'] },
-                    { answer: 'stílus', alternatives: ['design', 'formázást'] },
-                    { answer: 'JavaScript', alternatives: ['javascript', 'JS'] }
-                ]
-            },
-            {
-                type: 'fillblank',
-                title: 'Kiegészítő Feladat - Jelszóbiztonság',
-                question: 'Egészítsd ki a hiányzó szavakat!',
-                text: 'Az erős jelszónak tartalmaznia kell _____ és _____ betűket, valamint _____ és speciális karaktereket.',
-                blanks: [
-                    { answer: 'nagybetű', alternatives: ['nagy', 'nagybetűs'] },
-                    { answer: 'kisbetű', alternatives: ['kis', 'kisbetűs'] },
-                    { answer: 'számokat', alternatives: ['szám', 'számjegyeket'] }
-                ]
-            },
-            {
-                type: 'fillblank',
-                title: 'Kiegészítő Feladat - Online Viselkedés',
-                question: 'Egészítsd ki a hiányzó szavakat!',
-                text: 'A közösségi média olyan platformok, ahol az emberek _____ és fotókat _____ meg. Fontos az online _____ fenntartása.',
-                blanks: [
-                    { answer: 'tartalmakat', alternatives: ['információkat', 'adatokat'] },
-                    { answer: 'oszthatnak', alternatives: ['osztatnak', 'megosztanak'] },
-                    { answer: 'etika', alternatives: ['magatartás', 'viselkedés'] }
-                ]
-            },
-
-            // AKASZTÓFÁS JÁTÉK
-            {
-                type: 'hangman',
-                title: 'Akasztófás Játék - Internet',
-                word: 'MEGOLDAS',
-                hint: 'Probléma elhárítása vagy válasz keresése a kérdésre',
-                maxWrong: 6
-            },
-            {
-                type: 'hangman',
-                title: 'Akasztófás Játék - Online Viselkedés',
-                word: 'TROLL',
-                hint: 'Aki szándékosan provokálja és bosszantja mások hozzászólásaival az interneten',
-                maxWrong: 6
-            },
-            {
-                type: 'hangman',
-                title: 'Akasztófás Játék - Biztonság',
-                word: 'KIBERBIZTONSÁG',
-                hint: 'A szakterület, amely az internetes és számítógépes támadások ellen véd',
-                maxWrong: 6
-            },
-            {
-                type: 'hangman',
-                title: 'Akasztófás Játék - Szerzői Jog',
-                word: 'CREATIVECOMMONS',
-                hint: 'Nyílt forráskód licenc, amely lehetővé teszi a kreatív munkák megosztását',
-                maxWrong: 6
-            },
-            {
-                type: 'hangman',
-                title: 'Akasztófás Játék - Minőség Biztosítás',
-                word: 'JOGTISZTA',
-                hint: 'Olyan tartalom, amely nem sért semmilyen szerzői jogot vagy más jogot',
-                maxWrong: 6
-            },
-
-            // SZABADULORSZOBA FELADAT
-            {
-                type: 'escaperoom',
-                title: 'Szabaduluszoba - Digitális Rejtély',
-                locks: [
-                    {
-                        id: 'lock1',
-                        description: '🔐 Ajtó 1: Jelszóvédett',
-                        hint: 'Az internetes kommunikáció alapja (4 betű)',
-                        question: 'Milyen protokollt használunk a biztonságos weboldal-kommunikációhoz?',
-                        answer: 'HTTPS',
-                        alternatives: ['https']
-                    },
-                    {
-                        id: 'lock2',
-                        description: '🔐 Ajtó 2: Biometrikus lezárás',
-                        hint: 'Az adatok titkosításának módszere (9 betű)',
-                        question: 'Mi az a technológia, amely az adatokat olvashatatlanná teszi?',
-                        answer: 'TITKOSÍTÁS',
-                        alternatives: ['titkositás']
-                    },
-                    {
-                        id: 'lock3',
-                        description: '🔐 Ajtó 3: Kódzáras',
-                        hint: 'A digitális támadások elleni védekezés (7 betű)',
-                        question: 'Mi az a szoftver, amely véd a vírusok ellen?',
-                        answer: 'ANTIVÍRUS',
-                        alternatives: ['antivirus', 'antivirust']
-                    }
-                ]
-            }
-        ];
-
-        // Globális változók
-        let currentTaskIndex = 0;
-        let totalScore = 0;
-        let solvedTasks = 0;
-        let correctAnswers = 0;
-        let taskOrder = [];
-        let currentAnswers = {};
-
-        // Fisher-Yates shuffle algoritmus
-        function shuffleArray(array) {
-            const shuffled = [...array];
-            for (let i = shuffled.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-            }
-            return shuffled;
+        function openZumi() {
+            // Megnyitja a Zümi szabadulószobát
+            window.location.href = 'beebot-escape-room.html';
         }
 
-        function startQuiz() {
-            // Feladatok véletlenszerűsítése
-            taskOrder = shuffleArray(tasks.map((_, i) => i));
-            currentTaskIndex = 0;
-            totalScore = 0;
-            solvedTasks = 0;
-            correctAnswers = 0;
-
-            document.querySelector('.welcome-screen').classList.remove('active');
-            document.querySelector('.task-container').classList.add('active');
-
-            loadTask();
-        }
-
-        function loadTask() {
-            if (currentTaskIndex >= taskOrder.length) {
-                showResults();
-                return;
-            }
-
-            const taskIndex = taskOrder[currentTaskIndex];
-            const task = tasks[taskIndex];
-
-            updateProgress();
-            renderTask(task);
-        }
-
-        function updateProgress() {
-            const progress = Math.round((currentTaskIndex / taskOrder.length) * 100);
-            const progressFill = document.getElementById('progressFill');
-            progressFill.style.width = progress + '%';
-            progressFill.textContent = progress + '%';
-        }
-
-        function renderTask(task) {
-            const taskNumber = currentTaskIndex + 1;
-            document.getElementById('taskNumber').textContent = `Feladat ${taskNumber}/${taskOrder.length}`;
-            document.getElementById('taskTitle').textContent = task.title;
-
-            let html = '';
-
-            switch (task.type) {
-                case 'test':
-                case 'multiple':
-                    html = renderTestQuestion(task);
-                    break;
-                case 'fillblank':
-                    html = renderFillBlank(task);
-                    break;
-                case 'hangman':
-                    html = renderHangman(task);
-                    break;
-                case 'escaperoom':
-                    html = renderEscapeRoom(task);
-                    break;
-            }
-
-            document.getElementById('taskContent').innerHTML = html;
-        }
-
-        function renderTestQuestion(task) {
-            let html = `<div class="question"><div class="question-text">${task.question}</div><div class="options">`;
-
-            task.options.forEach((option, index) => {
-                const inputType = task.type === 'multiple' ? 'checkbox' : 'radio';
-                const name = 'option' + currentTaskIndex;
-                html += `
-                    <label class="option">
-                        <input type="${inputType}" name="${name}" value="${index}" onchange="selectOption(${index}, '${task.type}')">
-                        ${option.text}
-                    </label>
-                `;
-            });
-
-            html += '</div></div>';
-            return html;
-        }
-
-        function renderFillBlank(task) {
-            let html = `<div class="question"><div class="question-text">${task.question}</div>`;
-            html += '<div style="font-size: 1.1em; line-height: 2; margin: 20px 0;">';
-
-            let textParts = task.text.split('_____');
-            let blankIndex = 0;
-
-            textParts.forEach((part, index) => {
-                html += part;
-                if (index < task.blanks.length) {
-                    html += `<input type="text" class="blank-input" id="blank${index}" placeholder="Szó ${index + 1}">`;
-                    blankIndex++;
-                }
-            });
-
-            html += '</div></div>';
-            return html;
-        }
-
-        function renderHangman(task) {
-            currentAnswers[currentTaskIndex] = {
-                word: task.word,
-                guessed: [],
-                wrong: 0,
-                solved: false
-            };
-
-            const displayWord = task.word.split('').map(letter => 
-                currentAnswers[currentTaskIndex].guessed.includes(letter) ? letter : '_'
-            ).join(' ');
-
-            let html = `
-                <div class="hangman-container">
-                    <div class="hangman-word" id="hangmanWord">${displayWord}</div>
-                    <div><strong>Tipp:</strong> ${task.hint}</div>
-                    <div style="margin: 20px 0;">Hibás kísérletek: <span id="wrongCount">0</span>/${task.maxWrong}</div>
-                    <div class="hangman-letters" id="hangmanLetters">
-            `;
-
-            const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZÁÉÍÓÖŐÚÜŰ';
-            alphabet.split('').forEach(letter => {
-                html += `<button class="hangman-btn" id="btn${letter}" onclick="guessLetter('${letter}', ${currentTaskIndex})">${letter}</button>`;
-            });
-
-            html += `
-                    </div>
-                    <div class="hangman-status" id="hangmanStatus"></div>
-                </div>
-            `;
-
-            return html;
-        }
-
-        function renderEscapeRoom(task) {
-            let html = `
-                <div class="escape-room">
-                    <p><strong>🔓 Szabaduloszoba:</strong> Nyisd ki az összes zárat a helyes válaszok megadásával!</p>
-            `;
-
-            task.locks.forEach(lock => {
-                html += `
-                    <div style="margin: 20px 0; padding: 15px; border: 2px solid #ddd; border-radius: 8px;">
-                        <div class="lock-status locked" id="lock${lock.id}">
-                            ${lock.description}
-                        </div>
-                        <p style="margin: 10px 0; color: #666;">
-                            <strong>Tipp:</strong> ${lock.hint}
-                        </p>
-                        <p style="margin: 10px 0;"><strong>${lock.question}</strong></p>
-                        <input type="text" class="blank-input" id="answer${lock.id}" placeholder="Válasz (nagy betűvel)" style="width: 100%; max-width: 300px;">
-                        <button class="btn" style="margin-top: 10px;" onclick="checkLock('${lock.id}', ${currentTaskIndex})">Ellenőrzés</button>
-                    </div>
-                `;
-            });
-
-            html += `
-                    <div class="hints">
-                        <strong>💡 Összes zárat megnyitottál!</strong>
-                        <p style="margin-top: 10px; color: green;">Folytasd a következő feladattal!</p>
-                    </div>
-            `;
-
-            html += '</div>';
-            return html;
-        }
-
-        function selectOption(index, type) {
-            if (type === 'test') {
-                currentAnswers[currentTaskIndex] = index;
-            } else if (type === 'multiple') {
-                if (!currentAnswers[currentTaskIndex]) {
-                    currentAnswers[currentTaskIndex] = [];
-                }
-                const checkbox = document.querySelector(`input[name="option${currentTaskIndex}"]:checked`);
-                currentAnswers[currentTaskIndex] = [];
-                document.querySelectorAll(`input[name="option${currentTaskIndex}"]:checked`).forEach(cb => {
-                    currentAnswers[currentTaskIndex].push(parseInt(cb.value));
-                });
-            }
-        }
-
-        function guessLetter(letter, taskIndex) {
-            const answer = currentAnswers[taskIndex];
-            
-            if (answer.guessed.includes(letter)) return;
-            
-            answer.guessed.push(letter);
-            document.getElementById('btn' + letter).disabled = true;
-
-            if (!answer.word.includes(letter)) {
-                answer.wrong++;
-            }
-
-            updateHangmanDisplay(taskIndex);
-        }
-
-        function updateHangmanDisplay(taskIndex) {
-            const task = tasks[taskOrder[taskIndex]];
-            const answer = currentAnswers[taskIndex];
-            
-            const displayWord = answer.word.split('').map(letter => 
-                answer.guessed.includes(letter) ? letter : '_'
-            ).join(' ');
-
-            document.getElementById('hangmanWord').textContent = displayWord;
-            document.getElementById('wrongCount').textContent = answer.wrong;
-
-            const won = answer.word.split('').every(letter => answer.guessed.includes(letter));
-            const lost = answer.wrong >= task.maxWrong;
-
-            if (won) {
-                document.getElementById('hangmanStatus').textContent = '✅ Nyertél!';
-                document.getElementById('hangmanStatus').classList.add('win');
-                document.querySelectorAll('.hangman-btn').forEach(btn => btn.disabled = true);
-                answer.solved = true;
-            } else if (lost) {
-                document.getElementById('hangmanStatus').textContent = '❌ Vesztettél! A szó: ' + answer.word;
-                document.getElementById('hangmanStatus').classList.add('lose');
-                document.querySelectorAll('.hangman-btn').forEach(btn => btn.disabled = true);
-            }
-        }
-
-        function checkLock(lockId, taskIndex) {
-            const task = tasks[taskOrder[taskIndex]];
-            const lock = task.locks.find(l => l.id === lockId);
-            const input = document.getElementById('answer' + lockId);
-            const answer = input.value.toUpperCase().trim();
-
-            const isCorrect = lock.alternatives.some(alt => alt.toUpperCase() === answer) || 
-                            lock.answer === answer;
-
-            const lockElement = document.getElementById('lock' + lockId);
-            if (isCorrect) {
-                lockElement.classList.remove('locked');
-                lockElement.classList.add('unlocked');
-                input.disabled = true;
-                input.style.borderColor = '#28a745';
-            } else {
-                input.style.borderColor = '#dc3545';
-                input.style.boxShadow = '0 0 0 3px rgba(220, 53, 69, 0.1)';
-                setTimeout(() => {
-                    input.style.borderColor = '#ddd';
-                    input.style.boxShadow = 'none';
-                }, 500);
-            }
-        }
-
-        function submitTask() {
-            const task = tasks[taskOrder[currentTaskIndex]];
-            let isCorrect = false;
-            let points = 0;
-
-            switch (task.type) {
-                case 'test':
-                    isCorrect = currentAnswers[currentTaskIndex] === 
-                               task.options.findIndex(o => o.correct);
-                    break;
-
-                case 'multiple':
-                    const selected = currentAnswers[currentTaskIndex] || [];
-                    const correctIndices = task.options
-                        .map((o, i) => o.correct ? i : -1)
-                        .filter(i => i !== -1);
-                    isCorrect = selected.length === correctIndices.length &&
-                               selected.every(i => correctIndices.includes(i));
-                    break;
-
-                case 'fillblank':
-                    let allCorrect = true;
-                    task.blanks.forEach((blank, index) => {
-                        const input = document.getElementById('blank' + index);
-                        const userAnswer = input.value.trim().toUpperCase();
-                        const correctAnswer = blank.answer.toUpperCase();
-                        const alternatives = blank.alternatives.map(a => a.toUpperCase());
-                        
-                        if (userAnswer !== correctAnswer && !alternatives.includes(userAnswer)) {
-                            allCorrect = false;
-                        }
-                    });
-                    isCorrect = allCorrect;
-                    break;
-
-                case 'hangman':
-                    isCorrect = currentAnswers[currentTaskIndex].solved;
-                    break;
-
-                case 'escaperoom':
-                    const allLocked = task.locks.every(lock => {
-                        const lockElement = document.getElementById('lock' + lock.id);
-                        return lockElement.classList.contains('unlocked');
-                    });
-                    isCorrect = allLocked;
-                    break;
-            }
-
-            if (isCorrect) {
-                points = 10;
-                correctAnswers++;
-            }
-
-            totalScore += points;
-            solvedTasks++;
-
-            updateScoreHeader();
-
-            currentTaskIndex++;
-            loadTask();
-        }
-
-        function skipTask() {
-            solvedTasks++;
-            currentTaskIndex++;
-            loadTask();
-        }
-
-        function updateScoreHeader() {
-            document.getElementById('scoreHeader').textContent = 'Pontok: ' + totalScore;
-        }
-
-        function showResults() {
-            document.querySelector('.task-container').classList.remove('active');
-            document.querySelector('.results-screen').classList.add('active');
-
-            const maxScore = solvedTasks * 10;
-            const successRate = solvedTasks > 0 ? Math.round((correctAnswers / solvedTasks) * 100) : 0;
-
-            document.getElementById('finalScore').textContent = totalScore;
-            document.getElementById('solvedTasks').textContent = solvedTasks;
-            document.getElementById('correctAnswers').textContent = correctAnswers;
-            document.getElementById('successRate').textContent = successRate + '%';
-            document.getElementById('totalPoints').textContent = totalScore + '/' + maxScore;
-
-            let rating = '';
-            let ratingClass = '';
-
-            if (successRate >= 90) {
-                rating = '⭐⭐⭐⭐⭐ Kiváló teljesítmény!';
-                ratingClass = 'excellent';
-            } else if (successRate >= 80) {
-                rating = '⭐⭐⭐⭐ Nagyon jó!';
-                ratingClass = 'good';
-            } else if (successRate >= 60) {
-                rating = '⭐⭐⭐ Jó munka!';
-                ratingClass = 'average';
-            } else {
-                rating = '⭐⭐ Gyakorolj még!';
-                ratingClass = 'poor';
-            }
-
-            const ratingDiv = document.getElementById('ratingDiv');
-            ratingDiv.textContent = rating;
-            ratingDiv.className = 'rating ' + ratingClass;
+        function openTest() {
+            // Megnyitja a digitális kultúra tesztet
+            window.location.href = 'test-digikultura.html';
         }
     </script>
 </body>
