@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bee-Bot Szabadulószoba - Nyilvános Könyvtár</title>
+    <title>Zümi Szabadulószoba - Nyilvános Könyvtár</title>
     <style>
         * {
             margin: 0;
@@ -49,16 +49,18 @@
         }
 
         header::before {
-            content: '🐝 🐝 🐝';
+            content: '🐝';
             position: absolute;
-            font-size: 60px;
-            opacity: 0.3;
+            font-size: 100px;
+            opacity: 0.2;
             animation: float 3s ease-in-out infinite;
+            left: 20px;
+            top: 10px;
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
         }
 
         h1 {
@@ -99,9 +101,13 @@
         }
 
         .story-text {
-            font-size: 1.1em;
-            line-height: 1.8;
+            font-size: 1.15em;
+            line-height: 2;
             color: var(--text-dark);
+            margin-bottom: 20px;
+        }
+
+        .story-text p {
             margin-bottom: 20px;
         }
 
@@ -190,21 +196,73 @@
             font-size: 1.3em;
         }
 
+        .board {
+            background: #2C3E50;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 4px solid var(--primary);
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .board-content {
+            color: #FFD700;
+            font-size: 1.3em;
+            font-weight: bold;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+        }
+
         .input-group {
             margin: 15px 0;
             display: flex;
             gap: 10px;
+            flex-wrap: wrap;
         }
 
         input[type="text"],
         input[type="number"] {
             flex: 1;
+            min-width: 150px;
             padding: 12px;
             font-size: 1.1em;
             border: 3px solid var(--primary);
             border-radius: 10px;
             font-family: inherit;
             font-weight: bold;
+        }
+
+        .grid-input {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .grid-btn {
+            padding: 15px;
+            font-size: 1.2em;
+            border: 3px solid var(--primary);
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .grid-btn:hover {
+            background: var(--bg-light);
+            transform: scale(1.05);
+        }
+
+        .grid-btn.selected {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary-dark);
         }
 
         button {
@@ -247,9 +305,10 @@
             border-radius: 10px;
             font-family: 'Courier New', monospace;
             margin: 15px 0;
-            font-size: 1em;
+            font-size: 1.2em;
             border: 3px solid var(--primary);
             text-align: center;
+            letter-spacing: 5px;
         }
 
         .hint {
@@ -371,6 +430,51 @@
             content: '❌ ';
         }
 
+        .zumi-board {
+            background: linear-gradient(135deg, #87CEEB 0%, #E0FFFF 100%);
+            border: 4px solid var(--primary-dark);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .zumi-board-title {
+            color: var(--primary-dark);
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .board-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .board-cell {
+            background: white;
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            padding: 15px;
+            font-size: 1.5em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .board-cell:hover {
+            background: var(--bg-light);
+            transform: scale(1.05);
+        }
+
+        .board-cell.selected {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary-dark);
+        }
+
         @media (max-width: 768px) {
             h1 {
                 font-size: 1.8em;
@@ -387,14 +491,18 @@
             .treasure h2 {
                 font-size: 1.8em;
             }
+
+            .board-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>🐝 Bee-Bot Szabadulószoba 🐝</h1>
-            <p class="subtitle">Segítsd ki Buzit a könyvtárból!</p>
+            <h1>🐝 Zümi Szabadulószobája 🐝</h1>
+            <p class="subtitle">Segítsd meg Zümit, hogy kiszabaduljon a könyvtárból!</p>
         </header>
 
         <div class="progress">
@@ -408,20 +516,29 @@
             <!-- INTRO ROOM -->
             <div class="room active" data-room="0">
                 <div class="story-container">
-                    <div class="story-title">🐝 A Történet</div>
+                    <div class="story-title">📖 A Történet</div>
                     <div class="story-text">
-                        <p>A Nyilvános Könyvtár egy varázslatos hely, ahol Buzi, a kis Bee-Bot robot, az összes könyvet rendezget. De ó, nem! Véletlenül beleugrik a csapdás zárkónyv-szekrénybe, és most bezárva van!</p>
-                        <p style="margin-top: 15px;">Te vagy az egyetlen, aki segíthet neki. Meg kell oldanod 4 szórakoztató programozási feladatot, hogy feloldhasd az ajtókat, és végül kiesemény a kincs kincses terem...</p>
-                        <p style="margin-top: 15px;">Készen állsz a kalandon? Kattints az "Első szoba" gombra, és kezdd el!</p>
+                        <p>Szia! Én vagyok <strong>Zümi</strong>, egy okos kis méhecske. Szeretem a könyveket, és minden nap a Nyilvános Könyvtárban futkározom.</p>
+                        
+                        <p>De ma valami rossz dolog történt... Játszottam a könyvek között, és véletlenül beléptem egy rejtett szobába. Az ajtó mögöttem becsukódott, és most <strong>BEZÁRVA VAGYOK!</strong> 😱</p>
+                        
+                        <p>Rajtad múlik, hogy kiszabadulhatsz-e! A szobák ajtaját egy-egy <strong>feladat</strong> nyitja meg. Ha helyesen megoldod őket, végigvihetsz engem a szabadulószobán, és végül egy csodálatos kincshez juthatsz!</p>
+                        
+                        <p><strong>Négy szoba vár rád:</strong></p>
+                        <p style="text-align: center; font-size: 1.1em;">
+                            🗺️ Labirintus → 🌈 Színek → 💻 Kódok → 🔐 Végső Jelszó
+                        </p>
+                        
+                        <p>Kész vagy erre az izgalmas kalantra? Akkor indulj el az első szobába! 🚀</p>
                     </div>
                 </div>
 
-                <button class="next-btn show" onclick="switchRoom(1)">🚀 Első szoba</button>
+                <button class="next-btn show" onclick="switchRoom(1)">🚀 Az első szoba felé!</button>
             </div>
 
             <!-- ROOM 1: MOVEMENT CHALLENGE -->
             <div class="room" data-room="1">
-                <div class="room-title">📍 1. szoba: Az Irányok Labirintusa</div>
+                <div class="room-title">🗺️ 1. szoba: A Labirintus</div>
                 
                 <div class="room-content">
                     <div>
@@ -429,27 +546,34 @@
                     </div>
                     <div>
                         <div class="room-text">
-                            <strong>Buzi elveszett a nagykönyvtárban!</strong> Meg kell segíteni neki, hogy megtalálja az út kijelzőt. Az alábbi parancsokkal kell programoznod:
-                            <ul style="margin-top: 15px; margin-left: 20px;">
-                                <li>⬆️ = Előre lépés</li>
-                                <li>⬅️ = Balra fordulás</li>
-                                <li>➡️ = Jobbra fordulás</li>
-                            </ul>
+                            <strong>Zümi egy összetett labirintusban ragadt!</strong> Az ajtó csak akkor nyílik meg, ha helyesen programozod meg Zümi lépéseit. Minden lépés és fordulás számít!
                         </div>
                     </div>
                 </div>
 
                 <div class="challenge">
-                    <div class="challenge-title">Feladat: Irányok száma</div>
-                    <p>Buzinak 3 lépést kell előre mennie, majd 2x balra fordulnia. Hány lépést/fordulást végez össze Buzi?</p>
+                    <div class="challenge-title">Zümi Mozgása a Táblán</div>
+                    <p>Nézd meg Zümi útját! Számlálj meg minden lépést és fordulást!</p>
+                    
+                    <div class="zumi-board">
+                        <div class="zumi-board-title">🐝 Zümi útja:</div>
+                        <div class="code-display" id="room1-board">
+                            ⬆️ ⬆️ ➡️ ⬆️ ➡️
+                        </div>
+                        <p style="margin-top: 10px; font-size: 0.95em;">
+                            ⬆️ = előre lépés | ➡️ = jobbra fordulás | ⬅️ = balra fordulás
+                        </p>
+                    </div>
+
+                    <p><strong>Hány összes mozgás (lépés + fordulás) van?</strong></p>
                     
                     <div class="input-group">
-                        <input type="number" id="room1-answer" placeholder="Írd be a választ!">
-                        <button onclick="checkAnswer(1, 5)">Ellenőrzés</button>
+                        <input type="number" id="room1-answer" placeholder="Add meg a számot!">
+                        <button onclick="checkAnswer(1)">Ellenőrzés</button>
                     </div>
                     
                     <div id="room1-feedback" class="feedback"></div>
-                    <div class="hint">Összesen: 3 előre + 2 fordulás = ?</div>
+                    <div class="hint" id="room1-hint"></div>
                 </div>
 
                 <button class="next-btn" id="room1-next" onclick="switchRoom(2)">➡️ Következő szoba</button>
@@ -457,7 +581,7 @@
 
             <!-- ROOM 2: PATTERN CHALLENGE -->
             <div class="room" data-room="2">
-                <div class="room-title">🎨 2. szoba: A Színek Mintája</div>
+                <div class="room-title">🌈 2. szoba: A Szín Rejtélye</div>
                 
                 <div class="room-content">
                     <div>
@@ -465,25 +589,30 @@
                     </div>
                     <div>
                         <div class="room-text">
-                            <strong>A szoba falai furcsa mintával vannak díszítve.</strong> Buzi csak akkor mehet tovább, ha felismeri a minta szabályát. Figyelj a sorrendre!
+                            <strong>Ez a szoba tele van színokkal!</strong> Zümi csak akkor mehet tovább, ha felismeri a minta szabályát. Figyeld meg a színeket!
                         </div>
                     </div>
                 </div>
 
                 <div class="challenge">
-                    <div class="challenge-title">Feladat: Minta felismerése</div>
-                    <p style="font-size: 1.3em; text-align: center; margin: 20px 0;">
-                        🔴 🟡 🔵 🔴 🟡 🔵 🔴 🟡 <strong style="color: var(--accent);">?</strong>
-                    </p>
-                    <p>Mi lesz a következő szín?</p>
+                    <div class="challenge-title">Zümi Színmintája</div>
+                    <p>Zümi egy szép mintát rajzolt a falra. Mi lesz a következő szín?</p>
                     
-                    <div class="input-group">
-                        <input type="text" id="room2-answer" placeholder="Írd be: piros, sárga vagy kék!">
-                        <button onclick="checkAnswerText(2, 'kék')">Ellenőrzés</button>
+                    <div class="zumi-board">
+                        <div class="zumi-board-title">🎨 Zümi mintája:</div>
+                        <div id="room2-board" style="font-size: 2em; padding: 20px 0; font-weight: bold;">
+                            
+                        </div>
+                    </div>
+
+                    <p><strong>Válaszd ki a következő szín emojit!</strong></p>
+                    
+                    <div class="grid-input" id="room2-choices">
+                        
                     </div>
                     
                     <div id="room2-feedback" class="feedback"></div>
-                    <div class="hint">A minta 3 szín szerint ismétlődik: piros, sárga, kék...</div>
+                    <div class="hint" id="room2-hint"></div>
                 </div>
 
                 <button class="next-btn" id="room2-next" onclick="switchRoom(3)">➡️ Következő szoba</button>
@@ -491,7 +620,7 @@
 
             <!-- ROOM 3: SEQUENCE CHALLENGE -->
             <div class="room" data-room="3">
-                <div class="room-title">⚙️ 3. szoba: A Programozási Kód</div>
+                <div class="room-title">💻 3. szoba: A Programozási Kód</div>
                 
                 <div class="room-content">
                     <div>
@@ -499,28 +628,31 @@
                     </div>
                     <div>
                         <div class="room-text">
-                            <strong>Ez az én tárgyalóm!</strong> - mondja egy robot. - <strong>Meg kell tanulnod a Bee-Bot parancsokat!</strong>
+                            <strong>Ez a tárgyalóm!</strong> - mondja egy másik robot. - Zümi megtanulta a robot-parancsokat. De tudod-e te is számlálni őket?
                         </div>
                     </div>
                 </div>
 
                 <div class="challenge">
-                    <div class="challenge-title">Feladat: Bee-Bot Kódolás</div>
-                    <p>A Bee-Bot az alábbi utasításokat értelmezi:</p>
+                    <div class="challenge-title">Zümi Robot Kódja</div>
+                    <p>Zümi ezt a kódot tanulja:</p>
                     
-                    <div class="code-display">
-                        ⬆️ ⬆️ ➡️ ⬆️ ➡️ ➡️
+                    <div class="zumi-board">
+                        <div class="zumi-board-title">⚙️ A Robot Kód:</div>
+                        <div class="code-display" id="room3-board">
+                            
+                        </div>
                     </div>
 
-                    <p>Hány "előre lépés" (⬆️) parancs van ebben a kódban?</p>
+                    <p id="room3-question"><strong>Hány parancs van ebben a kódban?</strong></p>
                     
                     <div class="input-group">
-                        <input type="number" id="room3-answer" placeholder="Hány ⬆️?">
-                        <button onclick="checkAnswer(3, 3)">Ellenőrzés</button>
+                        <input type="number" id="room3-answer" placeholder="Add meg a számot!">
+                        <button onclick="checkAnswer(3)">Ellenőrzés</button>
                     </div>
                     
                     <div id="room3-feedback" class="feedback"></div>
-                    <div class="hint">Számold meg az összes ⬆️ szimbólumot!</div>
+                    <div class="hint" id="room3-hint"></div>
                 </div>
 
                 <button class="next-btn" id="room3-next" onclick="switchRoom(4)">➡️ Következő szoba</button>
@@ -528,93 +660,167 @@
 
             <!-- ROOM 4: FINAL CHALLENGE -->
             <div class="room" data-room="4">
-                <div class="room-title">🔐 4. szoba: Az Utolsó Kód</div>
+                <div class="room-title">🔐 4. szoba: Az Utolsó Jelszó</div>
                 
                 <div class="room-content">
                     <div>
-                        <div class="room-image">🔒</div>
+                        <div class="room-image">🔐</div>
                     </div>
                     <div>
                         <div class="room-text">
-                            <strong>Az ajtó előtt egy titokzatos számkódú lakat van!</strong> Meg kell találnod a helyes kódot a Bee-Bot számára, hogy kiszabadulhasson a szobából.
+                            <strong>Az utolsó ajtó előtt egy titokzatos zárlat van!</strong> Az összes előző feladat megoldásai az utolsó jelszót adják meg. Össze kell adnod őket!
                         </div>
                     </div>
                 </div>
 
                 <div class="challenge">
-                    <div class="challenge-title">Feladat: Az Utolsó Rejtély</div>
-                    <p>Kombinálni kell mindent, amit megtanultál! A kód az alábbi feladatokból áll:</p>
-                    <p style="margin: 15px 0;">Ha összeadod a helyes válaszokat:</p>
-                    <p style="margin: 15px 0; font-size: 1.2em; text-align: center; font-weight: bold;">
-                        5 (1. szoba) + 3 (2. szoba) + 3 (3. szoba) = <strong style="color: var(--accent);">?</strong>
-                    </p>
+                    <div class="challenge-title">Az Utolsó Jelszó</div>
+                    <p>Zümi szomorú az utolsó ajtó előtt. Segítsd meg összeszámolni:</p>
+                    
+                    <div class="zumi-board">
+                        <div class="zumi-board-title">🔑 A Jelszó Formula:</div>
+                        <div id="room4-formula" class="code-display">
+                            
+                        </div>
+                    </div>
+
+                    <p id="room4-question"><strong>Mi a végeredmény?</strong></p>
                     
                     <div class="input-group">
-                        <input type="number" id="room4-answer" placeholder="Mi az utolsó kód?">
-                        <button onclick="checkAnswer(4, 11)">Kód bejelentés</button>
+                        <input type="number" id="room4-answer" placeholder="Add meg a végeredményt!">
+                        <button onclick="checkAnswer(4)">Jelszó Bejelentés</button>
                     </div>
                     
                     <div id="room4-feedback" class="feedback"></div>
-                    <div class="hint">Az összes eddig helyes válasz összeadása adja meg a kódot!</div>
+                    <div class="hint" id="room4-hint">Összeadod az összes előző válasz számát!</div>
                 </div>
 
-                <button class="next-btn" id="room4-next" onclick="switchRoom(5)">🎉 A KINCS!</button>
+                <button class="next-btn" id="room4-next" onclick="switchRoom(5)">🎉 KINYÍLIK AZ AJTÓ!</button>
             </div>
 
             <!-- TREASURE ROOM -->
             <div class="room" data-room="5">
                 <div class="treasure">
-                    <div class="treasure-emoji">💎✨👑✨💎</div>
+                    <div class="treasure-emoji">🐝✨👑✨🐝</div>
                     
-                    <h2>GRATULÁLUNK!</h2>
+                    <h2>SIKERÜLT!</h2>
                     
                     <div class="treasure-text">
-                        <p><strong>Buzi kiszabadult!</strong> 🐝🎉</p>
-                        <p>Csodálatos programozó vagy! Sikeresen megoldottad az összes feladatot, és kivezetted Buzit az információs labirintusból!</p>
+                        <p><strong>Zümi végre szabad!</strong> 🎉</p>
+                        <p style="font-size: 1.2em; margin: 20px 0;">Rendkívüli programozó vagy! Csodálatosan megoldottad az összes feladatot!</p>
                     </div>
 
                     <div style="background: var(--bg-light); padding: 30px; border-radius: 15px; margin: 30px 0; border: 4px dashed var(--primary);">
-                        <h3 style="color: var(--primary-dark); margin-bottom: 15px;">📜 AZ ELREJTETT KINCS 📜</h3>
+                        <h3 style="color: var(--primary-dark); margin-bottom: 15px;">💎 AZ ELREJTETT KINCS 💎</h3>
                         <p style="font-size: 1.3em; color: var(--accent); font-weight: bold; margin: 15px 0;">A PROGRAMOZÁS VARÁZSLATA</p>
                         <p style="font-size: 1.1em; line-height: 1.8; color: var(--text-dark);">
-                            Most már tudod, hogy a Bee-Bot robotok egyszerű utasításokkal tudnak navigálni az egy világban. Ez a <strong>kódolás</strong> alapja! 
-                            Minél több programot írsz, annál okosabb és kreatívabb leszel. A programozás mint egy rejtett kincs - annál többet tanulsz, annál több lehetőség nyílik meg előtted! 🚀
+                            Most már tudod, hogy Zümi és a robotok egyszerű utasítások segítségével oldanak meg feladatokat. Ez a <strong>programozás</strong> lényege! 
+                            <br><br>
+                            Amikor kódot írsz vagy robotot programmozol, tulajdonképpen olyan lépéseket adasz, amelyeket a gép pontosan követ. Ez a képesség később sokkal bonyolultabb programok írásához vezet!
+                            <br><br>
+                            Zümi és barátai köszönik a segítséget! 🐝💛
                         </p>
                     </div>
 
                     <p style="font-size: 1.05em; color: var(--text-dark); margin-top: 30px;">
-                        <strong>Tippek a következő kalantra:</strong><br>
-                        ✓ Szerezzél többet a Bee-Botról!<br>
-                        ✓ Tervezz új útvonalakat a robotnak!<br>
-                        ✓ Barátaiddal versenyezz, ki tudja gyorsabban elvégezni a feladatot! 🏁
+                        <strong>🚀 Következő szintek:</strong><br>
+                        ✓ Fedezz fel több Bee-Bot feladatot!<br>
+                        ✓ Tervezz saját útvonalakat Zümiéknek!<br>
+                        ✓ Barátaiddal versenyezz! Aki gyorsabban oldja meg, az nyeri meg a Kincseket! 🏆
                     </p>
 
-                    <button onclick="location.reload()" style="margin-top: 30px; width: auto;">🔄 Újra kezdeni</button>
+                    <button onclick="location.reload()" style="margin-top: 30px; width: auto;">🔄 Újra játszani</button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
+        // FELADATOK ADATBÁZISA - Minden újraindításkor random feladatok
+        const challenges = {
+            room1: [
+                { pattern: '⬆️ ⬆️ ⬆️ ➡️', answer: 4, hint: 'Összesen 3 előre + 1 jobbra = 4' },
+                { pattern: '⬆️ ⬅️ ⬆️ ⬅️ ⬆️', answer: 5, hint: 'Összesen 3 előre + 2 fordulás = 5' },
+                { pattern: '⬆️ ⬆️ ➡️ ➡️ ⬆️', answer: 5, hint: 'Összesen 3 előre + 2 jobbra = 5' },
+                { pattern: '⬆️ ⬅️ ⬆️ ⬅️ ⬆️ ⬅️', answer: 6, hint: 'Összes mozgás: 3 előre + 3 balra = 6' }
+            ],
+            room2: [
+                { 
+                    pattern: '🔴 🟡 🔵 🔴 🟡',
+                    choices: ['🔵', '🔴', '🟡', '🟢'],
+                    answer: '🔵',
+                    hint: 'A minta 3 szín szerint ismétlődik: piros, sárga, kék...'
+                },
+                { 
+                    pattern: '⭐ 🌙 ☀️ ⭐ 🌙',
+                    choices: ['☀️', '⭐', '🌙', '❤️'],
+                    answer: '☀️',
+                    hint: 'A minta 3 elem szerint ismétlődik...'
+                },
+                { 
+                    pattern: '🍎 🍌 🍎 🍌 🍎',
+                    choices: ['🍌', '🍎', '🍉', '🍓'],
+                    answer: '🍌',
+                    hint: 'A minta 2 elem szerint ismétlődik: alma, banán...'
+                },
+                { 
+                    pattern: '🟣 🟠 🟢 🟣 🟠',
+                    choices: ['🟢', '🟣', '🟠', '🟡'],
+                    answer: '🟢',
+                    hint: 'A minta 3 szín szerint ismétlődik...'
+                }
+            ],
+            room3: [
+                { pattern: '⬆️ ⬆️ ⬆️ ➡️ ⬆️ ➡️', answer: 6, hint: 'Számold meg az összes szimbólumot!' },
+                { pattern: '⬆️ ⬆️ ➡️ ⬆️ ⬆️ ⬆️ ⬅️', answer: 7, hint: 'Összes parancs: 5 előre + 1 jobbra + 1 balra = 7' },
+                { pattern: '⬆️ ➡️ ⬆️ ➡️ ⬆️', answer: 5, hint: 'Összesen 5 parancs' },
+                { pattern: '⬆️ ⬆️ ⬆️ ⬆️ ➡️ ⬆️', answer: 6, hint: '4 előre + 1 jobbra + 1 előre = 6' }
+            ]
+        };
+
+        let currentRoom1 = null;
+        let currentRoom2 = null;
+        let currentRoom3 = null;
         let completedRooms = new Set();
+        let answers = {};
+
+        function getRandomChallenge(roomArray) {
+            return roomArray[Math.floor(Math.random() * roomArray.length)];
+        }
+
+        function initializeChallenges() {
+            currentRoom1 = getRandomChallenge(challenges.room1);
+            currentRoom2 = getRandomChallenge(challenges.room2);
+            currentRoom3 = getRandomChallenge(challenges.room3);
+
+            // Room 1
+            document.getElementById('room1-board').textContent = currentRoom1.pattern;
+            document.getElementById('room1-hint').textContent = currentRoom1.hint;
+
+            // Room 2
+            document.getElementById('room2-board').textContent = currentRoom2.pattern;
+            document.getElementById('room2-hint').textContent = currentRoom2.hint;
+            const choicesHtml = currentRoom2.choices.map(emoji => 
+                `<button class="grid-btn" onclick="selectColorAnswer('${emoji}')">${emoji}</button>`
+            ).join('');
+            document.getElementById('room2-choices').innerHTML = choicesHtml;
+
+            // Room 3
+            document.getElementById('room3-board').textContent = currentRoom3.pattern;
+            document.getElementById('room3-hint').textContent = currentRoom3.hint;
+        }
 
         function switchRoom(roomNumber) {
-            // Hide all rooms
             document.querySelectorAll('.room').forEach(room => {
                 room.classList.remove('active');
             });
 
-            // Show the selected room
             document.querySelector(`[data-room="${roomNumber}"]`).classList.add('active');
-
-            // Update progress
             updateProgress(roomNumber);
-
-            // Scroll to top
             window.scrollTo(0, 0);
         }
 
-        function checkAnswer(roomNumber, correctAnswer) {
+        function checkAnswer(roomNumber) {
             const inputId = `room${roomNumber}-answer`;
             const feedbackId = `room${roomNumber}-feedback`;
             const nextBtnId = `room${roomNumber}-next`;
@@ -623,40 +829,60 @@
             const feedback = document.getElementById(feedbackId);
             const nextBtn = document.getElementById(nextBtnId);
 
-            if (userAnswer === correctAnswer) {
+            let correct = false;
+            let correctAnswer = 0;
+
+            if (roomNumber === 1) {
+                correct = userAnswer === currentRoom1.answer;
+                correctAnswer = currentRoom1.answer;
+            } else if (roomNumber === 3) {
+                correct = userAnswer === currentRoom3.answer;
+                correctAnswer = currentRoom3.answer;
+            } else if (roomNumber === 4) {
+                const sum = (answers[1] || 0) + (answers[2] || 0) + (answers[3] || 0);
+                correct = userAnswer === sum;
+                correctAnswer = sum;
+            }
+
+            if (correct) {
                 feedback.classList.remove('incorrect');
                 feedback.classList.add('correct');
-                feedback.textContent = `✅ Tökéletes! ${correctAnswer} a helyes válasz!`;
+                feedback.textContent = `✅ Remek! ${correctAnswer} a helyes válasz! Zümi továbbléphet!`;
                 nextBtn.classList.add('show');
                 completedRooms.add(roomNumber);
+                answers[roomNumber] = correctAnswer;
                 updateProgress(roomNumber);
             } else {
                 feedback.classList.remove('correct');
                 feedback.classList.add('incorrect');
-                feedback.textContent = `❌ Próbáld újra! A helyes válasz: ${correctAnswer}`;
+                feedback.textContent = `❌ Nem jó. Próbáld újra! A helyes válasz: ${correctAnswer}`;
             }
         }
 
-        function checkAnswerText(roomNumber, correctAnswer) {
-            const inputId = `room${roomNumber}-answer`;
-            const feedbackId = `room${roomNumber}-feedback`;
-            const nextBtnId = `room${roomNumber}-next`;
+        function selectColorAnswer(emoji) {
+            document.querySelectorAll('#room2-choices .grid-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
 
-            const userAnswer = document.getElementById(inputId).value.toLowerCase().trim();
+            event.target.classList.add('selected');
+
+            const feedbackId = 'room2-feedback';
+            const nextBtnId = 'room2-next';
             const feedback = document.getElementById(feedbackId);
             const nextBtn = document.getElementById(nextBtnId);
 
-            if (userAnswer === correctAnswer) {
+            if (emoji === currentRoom2.answer) {
                 feedback.classList.remove('incorrect');
                 feedback.classList.add('correct');
-                feedback.textContent = `✅ Tökéletes! ${correctAnswer} a helyes válasz!`;
+                feedback.textContent = `✅ Tökéletes! Ez a helyes szín! Zümi mosolyog!`;
                 nextBtn.classList.add('show');
-                completedRooms.add(roomNumber);
-                updateProgress(roomNumber);
+                completedRooms.add(2);
+                answers[2] = 3; // Always 3 for pattern room
+                updateProgress(2);
             } else {
                 feedback.classList.remove('correct');
                 feedback.classList.add('incorrect');
-                feedback.textContent = `❌ Próbáld újra! Próbáld meg ismét!`;
+                feedback.textContent = `❌ Ez nem jó. Nézd meg újra a mintát!`;
             }
         }
 
@@ -671,9 +897,17 @@
                     progressItem.classList.add('current');
                 }
             }
+
+            // Update room 4 formula
+            if (currentRoom === 4 || completedRooms.has(4)) {
+                const sum = (answers[1] || 0) + (answers[2] || 0) + (answers[3] || 0);
+                document.getElementById('room4-formula').textContent = 
+                    `${answers[1] || '?'} + ${answers[2] || '?'} + ${answers[3] || '?'} = ?`;
+            }
         }
 
-        // Initialize
+        // Initialize when page loads
+        initializeChallenges();
         updateProgress(0);
     </script>
 </body>
