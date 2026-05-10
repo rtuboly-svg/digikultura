@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bee-Bot Szabadulószoba - Nyilvános Könyvtár</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #FFD700;
+            --primary-dark: #FFA500;
+            --secondary: #4CAF50;
+            --accent: #FF6B6B;
+            --bg-light: #FFF8E7;
+            --text-dark: #333;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Arial Rounded MT Bold', cursive, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: var(--bg-light);
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            border: 8px solid var(--primary);
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            padding: 30px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '🐝 🐝 🐝';
+            position: absolute;
+            font-size: 60px;
+            opacity: 0.3;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: white;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .subtitle {
+            color: white;
+            font-size: 1.1em;
+            margin-top: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .story-container {
+            padding: 40px;
+            background: white;
+            margin: 20px;
+            border-radius: 20px;
+            border-left: 8px solid var(--secondary);
+        }
+
+        .story-title {
+            font-size: 1.8em;
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .story-title::before {
+            content: '📖';
+            margin-right: 15px;
+            font-size: 1.5em;
+        }
+
+        .story-text {
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+        }
+
+        .rooms-container {
+            padding: 20px;
+        }
+
+        .room {
+            background: white;
+            margin: 20px;
+            padding: 30px;
+            border-radius: 20px;
+            border-top: 8px solid var(--secondary);
+            display: none;
+        }
+
+        .room.active {
+            display: block;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .room-title {
+            font-size: 2em;
+            color: var(--primary-dark);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .room-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .room-image {
+            width: 100%;
+            height: 300px;
+            background: var(--bg-light);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 100px;
+            border: 4px dashed var(--primary-dark);
+        }
+
+        .room-text {
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: var(--text-dark);
+        }
+
+        .challenge {
+            background: linear-gradient(135deg, #FFE5B4 0%, #FFDAB9 100%);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 6px solid var(--accent);
+        }
+
+        .challenge-title {
+            font-weight: bold;
+            color: var(--accent);
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .challenge-title::before {
+            content: '🎯';
+            margin-right: 10px;
+            font-size: 1.3em;
+        }
+
+        .input-group {
+            margin: 15px 0;
+            display: flex;
+            gap: 10px;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            flex: 1;
+            padding: 12px;
+            font-size: 1.1em;
+            border: 3px solid var(--primary);
+            border-radius: 10px;
+            font-family: inherit;
+            font-weight: bold;
+        }
+
+        button {
+            background: linear-gradient(135deg, var(--secondary) 0%, #45a049 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.1em;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-family: inherit;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        .next-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            width: 100%;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .next-btn.show {
+            display: block;
+        }
+
+        .code-display {
+            background: #000;
+            color: #0F0;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            font-size: 1em;
+            border: 3px solid var(--primary);
+            text-align: center;
+        }
+
+        .hint {
+            background: #E3F2FD;
+            border-left: 6px solid #2196F3;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-size: 0.95em;
+            color: #1565C0;
+        }
+
+        .hint::before {
+            content: '💡 ';
+            font-weight: bold;
+        }
+
+        .treasure {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .treasure-emoji {
+            font-size: 150px;
+            margin: 30px 0;
+            animation: bounce 0.6s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-30px); }
+        }
+
+        .treasure h2 {
+            font-size: 2.5em;
+            color: var(--primary-dark);
+            margin: 20px 0;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .treasure-text {
+            font-size: 1.3em;
+            color: var(--text-dark);
+            margin: 20px 0;
+            line-height: 1.8;
+        }
+
+        .progress {
+            background: white;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 15px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .progress-item {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--bg-light);
+            border: 4px solid var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .progress-item.completed {
+            background: var(--secondary);
+            border-color: var(--secondary);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .progress-item.current {
+            background: var(--primary);
+            border-color: var(--primary-dark);
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        .feedback {
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-weight: bold;
+            font-size: 1.1em;
+            display: none;
+        }
+
+        .feedback.correct {
+            background: #C8E6C9;
+            color: #2E7D32;
+            border-left: 6px solid var(--secondary);
+            display: block;
+        }
+
+        .feedback.correct::before {
+            content: '✅ ';
+        }
+
+        .feedback.incorrect {
+            background: #FFCDD2;
+            color: #C62828;
+            border-left: 6px solid var(--accent);
+            display: block;
+        }
+
+        .feedback.incorrect::before {
+            content: '❌ ';
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .room-content {
+                grid-template-columns: 1fr;
+            }
+
+            .treasure-emoji {
+                font-size: 80px;
+            }
+
+            .treasure h2 {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🐝 Bee-Bot Szabadulószoba 🐝</h1>
+            <p class="subtitle">Segítsd ki Buzit a könyvtárból!</p>
+        </header>
+
+        <div class="progress">
+            <div class="progress-item current" id="progress-1">1</div>
+            <div class="progress-item" id="progress-2">2</div>
+            <div class="progress-item" id="progress-3">3</div>
+            <div class="progress-item" id="progress-4">4</div>
+        </div>
+
+        <div class="rooms-container">
+            <!-- INTRO ROOM -->
+            <div class="room active" data-room="0">
+                <div class="story-container">
+                    <div class="story-title">🐝 A Történet</div>
+                    <div class="story-text">
+                        <p>A Nyilvános Könyvtár egy varázslatos hely, ahol Buzi, a kis Bee-Bot robot, az összes könyvet rendezget. De ó, nem! Véletlenül beleugrik a csapdás zárkónyv-szekrénybe, és most bezárva van!</p>
+                        <p style="margin-top: 15px;">Te vagy az egyetlen, aki segíthet neki. Meg kell oldanod 4 szórakoztató programozási feladatot, hogy feloldhasd az ajtókat, és végül kiesemény a kincs kincses terem...</p>
+                        <p style="margin-top: 15px;">Készen állsz a kalandon? Kattints az "Első szoba" gombra, és kezdd el!</p>
+                    </div>
+                </div>
+
+                <button class="next-btn show" onclick="switchRoom(1)">🚀 Első szoba</button>
+            </div>
+
+            <!-- ROOM 1: MOVEMENT CHALLENGE -->
+            <div class="room" data-room="1">
+                <div class="room-title">📍 1. szoba: Az Irányok Labirintusa</div>
+                
+                <div class="room-content">
+                    <div>
+                        <div class="room-image">🗺️</div>
+                    </div>
+                    <div>
+                        <div class="room-text">
+                            <strong>Buzi elveszett a nagykönyvtárban!</strong> Meg kell segíteni neki, hogy megtalálja az út kijelzőt. Az alábbi parancsokkal kell programoznod:
+                            <ul style="margin-top: 15px; margin-left: 20px;">
+                                <li>⬆️ = Előre lépés</li>
+                                <li>⬅️ = Balra fordulás</li>
+                                <li>➡️ = Jobbra fordulás</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="challenge">
+                    <div class="challenge-title">Feladat: Irányok száma</div>
+                    <p>Buzinak 3 lépést kell előre mennie, majd 2x balra fordulnia. Hány lépést/fordulást végez össze Buzi?</p>
+                    
+                    <div class="input-group">
+                        <input type="number" id="room1-answer" placeholder="Írd be a választ!">
+                        <button onclick="checkAnswer(1, 5)">Ellenőrzés</button>
+                    </div>
+                    
+                    <div id="room1-feedback" class="feedback"></div>
+                    <div class="hint">Összesen: 3 előre + 2 fordulás = ?</div>
+                </div>
+
+                <button class="next-btn" id="room1-next" onclick="switchRoom(2)">➡️ Következő szoba</button>
+            </div>
+
+            <!-- ROOM 2: PATTERN CHALLENGE -->
+            <div class="room" data-room="2">
+                <div class="room-title">🎨 2. szoba: A Színek Mintája</div>
+                
+                <div class="room-content">
+                    <div>
+                        <div class="room-image">🌈</div>
+                    </div>
+                    <div>
+                        <div class="room-text">
+                            <strong>A szoba falai furcsa mintával vannak díszítve.</strong> Buzi csak akkor mehet tovább, ha felismeri a minta szabályát. Figyelj a sorrendre!
+                        </div>
+                    </div>
+                </div>
+
+                <div class="challenge">
+                    <div class="challenge-title">Feladat: Minta felismerése</div>
+                    <p style="font-size: 1.3em; text-align: center; margin: 20px 0;">
+                        🔴 🟡 🔵 🔴 🟡 🔵 🔴 🟡 <strong style="color: var(--accent);">?</strong>
+                    </p>
+                    <p>Mi lesz a következő szín?</p>
+                    
+                    <div class="input-group">
+                        <input type="text" id="room2-answer" placeholder="Írd be: piros, sárga vagy kék!">
+                        <button onclick="checkAnswerText(2, 'kék')">Ellenőrzés</button>
+                    </div>
+                    
+                    <div id="room2-feedback" class="feedback"></div>
+                    <div class="hint">A minta 3 szín szerint ismétlődik: piros, sárga, kék...</div>
+                </div>
+
+                <button class="next-btn" id="room2-next" onclick="switchRoom(3)">➡️ Következő szoba</button>
+            </div>
+
+            <!-- ROOM 3: SEQUENCE CHALLENGE -->
+            <div class="room" data-room="3">
+                <div class="room-title">⚙️ 3. szoba: A Programozási Kód</div>
+                
+                <div class="room-content">
+                    <div>
+                        <div class="room-image">💻</div>
+                    </div>
+                    <div>
+                        <div class="room-text">
+                            <strong>Ez az én tárgyalóm!</strong> - mondja egy robot. - <strong>Meg kell tanulnod a Bee-Bot parancsokat!</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="challenge">
+                    <div class="challenge-title">Feladat: Bee-Bot Kódolás</div>
+                    <p>A Bee-Bot az alábbi utasításokat értelmezi:</p>
+                    
+                    <div class="code-display">
+                        ⬆️ ⬆️ ➡️ ⬆️ ➡️ ➡️
+                    </div>
+
+                    <p>Hány "előre lépés" (⬆️) parancs van ebben a kódban?</p>
+                    
+                    <div class="input-group">
+                        <input type="number" id="room3-answer" placeholder="Hány ⬆️?">
+                        <button onclick="checkAnswer(3, 3)">Ellenőrzés</button>
+                    </div>
+                    
+                    <div id="room3-feedback" class="feedback"></div>
+                    <div class="hint">Számold meg az összes ⬆️ szimbólumot!</div>
+                </div>
+
+                <button class="next-btn" id="room3-next" onclick="switchRoom(4)">➡️ Következő szoba</button>
+            </div>
+
+            <!-- ROOM 4: FINAL CHALLENGE -->
+            <div class="room" data-room="4">
+                <div class="room-title">🔐 4. szoba: Az Utolsó Kód</div>
+                
+                <div class="room-content">
+                    <div>
+                        <div class="room-image">🔒</div>
+                    </div>
+                    <div>
+                        <div class="room-text">
+                            <strong>Az ajtó előtt egy titokzatos számkódú lakat van!</strong> Meg kell találnod a helyes kódot a Bee-Bot számára, hogy kiszabadulhasson a szobából.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="challenge">
+                    <div class="challenge-title">Feladat: Az Utolsó Rejtély</div>
+                    <p>Kombinálni kell mindent, amit megtanultál! A kód az alábbi feladatokból áll:</p>
+                    <p style="margin: 15px 0;">Ha összeadod a helyes válaszokat:</p>
+                    <p style="margin: 15px 0; font-size: 1.2em; text-align: center; font-weight: bold;">
+                        5 (1. szoba) + 3 (2. szoba) + 3 (3. szoba) = <strong style="color: var(--accent);">?</strong>
+                    </p>
+                    
+                    <div class="input-group">
+                        <input type="number" id="room4-answer" placeholder="Mi az utolsó kód?">
+                        <button onclick="checkAnswer(4, 11)">Kód bejelentés</button>
+                    </div>
+                    
+                    <div id="room4-feedback" class="feedback"></div>
+                    <div class="hint">Az összes eddig helyes válasz összeadása adja meg a kódot!</div>
+                </div>
+
+                <button class="next-btn" id="room4-next" onclick="switchRoom(5)">🎉 A KINCS!</button>
+            </div>
+
+            <!-- TREASURE ROOM -->
+            <div class="room" data-room="5">
+                <div class="treasure">
+                    <div class="treasure-emoji">💎✨👑✨💎</div>
+                    
+                    <h2>GRATULÁLUNK!</h2>
+                    
+                    <div class="treasure-text">
+                        <p><strong>Buzi kiszabadult!</strong> 🐝🎉</p>
+                        <p>Csodálatos programozó vagy! Sikeresen megoldottad az összes feladatot, és kivezetted Buzit az információs labirintusból!</p>
+                    </div>
+
+                    <div style="background: var(--bg-light); padding: 30px; border-radius: 15px; margin: 30px 0; border: 4px dashed var(--primary);">
+                        <h3 style="color: var(--primary-dark); margin-bottom: 15px;">📜 AZ ELREJTETT KINCS 📜</h3>
+                        <p style="font-size: 1.3em; color: var(--accent); font-weight: bold; margin: 15px 0;">A PROGRAMOZÁS VARÁZSLATA</p>
+                        <p style="font-size: 1.1em; line-height: 1.8; color: var(--text-dark);">
+                            Most már tudod, hogy a Bee-Bot robotok egyszerű utasításokkal tudnak navigálni az egy világban. Ez a <strong>kódolás</strong> alapja! 
+                            Minél több programot írsz, annál okosabb és kreatívabb leszel. A programozás mint egy rejtett kincs - annál többet tanulsz, annál több lehetőség nyílik meg előtted! 🚀
+                        </p>
+                    </div>
+
+                    <p style="font-size: 1.05em; color: var(--text-dark); margin-top: 30px;">
+                        <strong>Tippek a következő kalantra:</strong><br>
+                        ✓ Szerezzél többet a Bee-Botról!<br>
+                        ✓ Tervezz új útvonalakat a robotnak!<br>
+                        ✓ Barátaiddal versenyezz, ki tudja gyorsabban elvégezni a feladatot! 🏁
+                    </p>
+
+                    <button onclick="location.reload()" style="margin-top: 30px; width: auto;">🔄 Újra kezdeni</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let completedRooms = new Set();
+
+        function switchRoom(roomNumber) {
+            // Hide all rooms
+            document.querySelectorAll('.room').forEach(room => {
+                room.classList.remove('active');
+            });
+
+            // Show the selected room
+            document.querySelector(`[data-room="${roomNumber}"]`).classList.add('active');
+
+            // Update progress
+            updateProgress(roomNumber);
+
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        function checkAnswer(roomNumber, correctAnswer) {
+            const inputId = `room${roomNumber}-answer`;
+            const feedbackId = `room${roomNumber}-feedback`;
+            const nextBtnId = `room${roomNumber}-next`;
+
+            const userAnswer = parseInt(document.getElementById(inputId).value);
+            const feedback = document.getElementById(feedbackId);
+            const nextBtn = document.getElementById(nextBtnId);
+
+            if (userAnswer === correctAnswer) {
+                feedback.classList.remove('incorrect');
+                feedback.classList.add('correct');
+                feedback.textContent = `✅ Tökéletes! ${correctAnswer} a helyes válasz!`;
+                nextBtn.classList.add('show');
+                completedRooms.add(roomNumber);
+                updateProgress(roomNumber);
+            } else {
+                feedback.classList.remove('correct');
+                feedback.classList.add('incorrect');
+                feedback.textContent = `❌ Próbáld újra! A helyes válasz: ${correctAnswer}`;
+            }
+        }
+
+        function checkAnswerText(roomNumber, correctAnswer) {
+            const inputId = `room${roomNumber}-answer`;
+            const feedbackId = `room${roomNumber}-feedback`;
+            const nextBtnId = `room${roomNumber}-next`;
+
+            const userAnswer = document.getElementById(inputId).value.toLowerCase().trim();
+            const feedback = document.getElementById(feedbackId);
+            const nextBtn = document.getElementById(nextBtnId);
+
+            if (userAnswer === correctAnswer) {
+                feedback.classList.remove('incorrect');
+                feedback.classList.add('correct');
+                feedback.textContent = `✅ Tökéletes! ${correctAnswer} a helyes válasz!`;
+                nextBtn.classList.add('show');
+                completedRooms.add(roomNumber);
+                updateProgress(roomNumber);
+            } else {
+                feedback.classList.remove('correct');
+                feedback.classList.add('incorrect');
+                feedback.textContent = `❌ Próbáld újra! Próbáld meg ismét!`;
+            }
+        }
+
+        function updateProgress(currentRoom) {
+            for (let i = 1; i <= 4; i++) {
+                const progressItem = document.getElementById(`progress-${i}`);
+                progressItem.classList.remove('completed', 'current');
+
+                if (i < currentRoom) {
+                    progressItem.classList.add('completed');
+                } else if (i === currentRoom) {
+                    progressItem.classList.add('current');
+                }
+            }
+        }
+
+        // Initialize
+        updateProgress(0);
+    </script>
+</body>
+</html>
